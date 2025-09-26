@@ -1,0 +1,17 @@
+﻿@page
+@model AttendanceSystem.Pages.Students.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form method="post">
+   
+    <input asp-for="Student.FirstName" placeholder="First name" />
+    <input asp-for="Student.LastName" placeholder="Last name" />
+    <button type="submit">Add Student</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

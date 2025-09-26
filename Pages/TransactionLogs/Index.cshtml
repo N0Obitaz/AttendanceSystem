@@ -1,0 +1,46 @@
+﻿@page
+@model AttendanceSystem.Pages.TransactionLogs.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionLog[0].Action)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionLog[0].Timestamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionLog[0].Student)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TransactionLog) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
+            </td>
+            <td>
+             
+                <a asp-page="./Details" asp-route-id="@item.TransactionId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.TransactionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
