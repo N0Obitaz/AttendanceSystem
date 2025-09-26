@@ -2,42 +2,64 @@
 @model AttendanceSystem.Pages.TransactionLogs.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Transaction Details";
 }
 
-<h1>Details</h1>
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0"><i class="bi bi-info-circle"></i> Transaction Details</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 fw-bold text-secondary">
+                    @Html.DisplayNameFor(model => model.TransactionLog.TransactionId)
+                </dt>
+                <dd class="col-sm-9">
+                    <span>@Html.DisplayFor(model => model.TransactionLog.TransactionId)</span>
+                </dd>
 
-<div>
-    <h4>TransactionLog</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionLog.TransactionId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model =>model.TransactionLog.TransactionId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionLog.Action)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionLog.Action)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionLog.Timestamp)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionLog.Timestamp)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionLog.Student)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionLog.StudentId)
-        </dd>
-    </dl>
-</div>
-<div>
-   
-    <a asp-page="./Index">Back to List</a>
+                <dt class="col-sm-3 fw-bold text-secondary">
+                    @Html.DisplayNameFor(model => model.TransactionLog.Action)
+                </dt>
+                <dd class="col-sm-9">
+                    @if(Model.TransactionLog.Action == "Marked Present")
+                    {
+                        <span class="badge bg-success text-white display-3">@Html.DisplayFor(model => model.TransactionLog.Action)</span>
+                    }
+                    else if (Model.TransactionLog.Action == "Marked Absent")
+                    {
+                        <span class="badge bg-danger text-white">@Html.DisplayFor(model => model.TransactionLog.Action)</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-info text-dark">@Html.DisplayFor(model => model.TransactionLog.Action)</span>
+                    }
+
+                    
+                </dd>
+
+                <dt class="col-sm-3 fw-bold text-secondary">
+                    @Html.DisplayNameFor(model => model.TransactionLog.Timestamp)
+                </dt>
+                <dd class="col-sm-9">
+                    <i class="bi bi-calendar-event text-primary"></i>
+                    @Model.TransactionLog.Timestamp.ToString("MMMM dd, yyyy - hh:mm tt")
+                </dd>
+
+                <dt class="col-sm-3 fw-bold text-secondary">
+                    @Html.DisplayNameFor(model => model.TransactionLog.Student)
+                </dt>
+                <dd class="col-sm-9">
+                    <i class="bi bi-person-fill text-success"></i>
+                    ID: @Html.DisplayFor(model => model.TransactionLog.StudentId)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
 </div>
