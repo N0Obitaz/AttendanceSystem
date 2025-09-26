@@ -1,8 +1,10 @@
 ﻿using System;
 using AttendanceSystem.Data;
 using AttendanceSystem.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceSystem.Pages.Attendances
@@ -14,6 +16,7 @@ namespace AttendanceSystem.Pages.Attendances
         public MarkModel(AttendanceSystemContext context)
         {
             _context = context;
+           
         }
 
         [BindProperty]
@@ -35,35 +38,45 @@ namespace AttendanceSystem.Pages.Attendances
             if (student == null)
                 return NotFound();
 
+
+         
+
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // 1️ Create Attendance Record
-                var attendance = new Attendance
-                {
-                    StudentId = student.StudentId,
-                    Date = DateTime.Today,
-                    Status = status
-                };
 
-                _context.Attendances.Add(attendance);
-                await _context.SaveChangesAsync();
+                
+                    // 1️ Create Attendance Record
+                    var attendance = new Attendance
+                    {
+                        StudentId = student.StudentId,
+                        Date = DateTime.Now.Date,
 
-                // 2️ Create Transaction Log
-                var log = new TransactionLog
-                {
-                    StudentId = student.StudentId,
-                    Action = $"Marked {status}",
-                    Timestamp = DateTime.UtcNow
-                };
+                        Status = status
+                    };
 
-                _context.TransactionLogs.Add(log);
-                await _context.SaveChangesAsync();
+                    _context.Attendances.Add(attendance);
+                    await _context.SaveChangesAsync();
 
-                //  Commit both inserts
-                await transaction.CommitAsync();
+                    // 2️ Create Transaction Log
+                    var log = new TransactionLog
+                    {
+                        StudentId = student.StudentId,
+                        Action = $"Marked {status}",
+                        Timestamp = DateTime.Now
 
-                TempData["Message"] = $"Attendance marked for {student.FirstName} {student.LastName}";
+                    };
+
+                    _context.TransactionLogs.Add(log);
+                    await _context.SaveChangesAsync();
+
+                    //  Commit both inserts
+                    await transaction.CommitAsync();
+                    TempData["Message"] = $"Attendance marked for {student.FirstName} {student.LastName}";
+                
+               
+
+                
                 return RedirectToPage("/Students/Index");
             }
             catch

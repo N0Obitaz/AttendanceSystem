@@ -4,7 +4,8 @@ namespace AttendanceSystem.Models
 {
     public class Student
     {
-
+        [Key]
+        [Display(Name = "Student Number")]
         public int StudentId { get; set; }
 
 

@@ -4,7 +4,36 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-10 fw-bold text-primary mb-3">
+            <i class="bi bi-clipboard-check"></i> Attendance Management System
+        </h1>
+        <p class="lead text-muted">A Simple Attendance and Transaction Logging System </p>
+        <hr class="my-4" />
+
+        <div class="card shadow-lg border-0 mt-4">
+            <div class="card-body">
+               
+                <h4 class="fw-bold text-dark">Group Balaguer</h4>
+                <h5 class="text-muted mt-3">Members:</h5>
+
+                <ul class="list-group list-group-flush mt-2">
+                    @foreach (var item in Model.Students)
+                    {
+                        <li class="list-group-item d-flex justify-content-center align-items-center">
+                            <i class="bi bi-person-fill text-primary me-2"></i>
+                            <span class="fw-semibold">@item.LastName, @item.FirstName</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-page="/Students/Index" class="btn btn-lg btn-success shadow-sm">
+                <i class="bi bi-people-fill"></i> Go to Students
+            </a>
+        </div>
+    </div>
 </div>
