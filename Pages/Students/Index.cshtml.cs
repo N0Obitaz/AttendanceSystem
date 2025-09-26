@@ -19,7 +19,7 @@ namespace AttendanceSystem.Pages.Students
             _context = context;
         }
 
-        public IList<Student> Student { get;set; } = default!;
+        public IList<Student>? Student { get;set; }
 
         public async Task OnGetAsync()
         {

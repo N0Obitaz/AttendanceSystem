@@ -44,6 +44,43 @@
 
 
     </dl>
+
+    <h4>Attendance Records</h4>
+
+    @if (Model.Student.Attendances != null && Model.Student.Attendances.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model.Student.Attendances.OrderByDescending(a => a.Date))
+                {
+                    <tr>
+                        <td>@record.Date.ToString("MMMM dd, yyyy")</td>
+                        <td>
+                            @if (record.Status == "Present")
+                            {
+                                <span class="badge bg-success">Present</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Absent</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No attendance records found.</p>
+    }
+
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Student.StudentId">Edit</a> |

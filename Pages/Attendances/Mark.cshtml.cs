@@ -42,7 +42,7 @@ namespace AttendanceSystem.Pages.Attendances
                 var attendance = new Attendance
                 {
                     StudentId = student.StudentId,
-                    Date = DateTime.UtcNow.Date,
+                    Date = DateTime.Today,
                     Status = status
                 };
 

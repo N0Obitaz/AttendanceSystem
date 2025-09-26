@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AttendanceSystem.Data;
+using AttendanceSystem.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using AttendanceSystem.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IDateTimeProvider, SystemDateTimeProvider>();
 builder.Services.AddDbContext<AttendanceSystemContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AttendanceSystemContext") ?? throw new InvalidOperationException("Connection string 'AttendanceSystemContext' not found.")));
 
