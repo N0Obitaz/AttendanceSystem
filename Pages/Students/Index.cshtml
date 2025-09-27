@@ -37,7 +37,7 @@
                     <td>@Html.DisplayFor(modelItem => item.LastName)</td>
                     <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                     <td>
-                        <span class="badge bg-info bg-opacity-50  text-dark">
+                        <span class="text-dark">
                             @item.Attendances.Count(a => a.Status == "Present") /
                             @item.Attendances.Count()
                         </span>

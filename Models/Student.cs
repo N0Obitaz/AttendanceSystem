@@ -1,23 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AttendanceSystem.Models
 {
     public class Student
     {
         [Key]
-        [Display(Name = "Student Number")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)] // disables auto-increment
         public int StudentId { get; set; }
 
-
-        [Display(Name = "First Name")]
         public string? FirstName { get; set; }
-
-        [Display(Name = "Last Name")]
         public string? LastName { get; set; }
 
-
-        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
-        public ICollection<TransactionLog> TransactionLogs { get; set; } = new List<TransactionLog>();
+        public ICollection<Attendance>? Attendances { get; set; }
+        public ICollection<TransactionLog>? TransactionLogs { get; set; }
 
     }
 }

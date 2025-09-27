@@ -21,6 +21,10 @@ namespace AttendanceSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Student>()
+               .Property(s => s.StudentId)
+               .ValueGeneratedNever();
             // Student - Attendance (1-to-Many)
             modelBuilder.Entity<Student>()
                 .HasMany(s => s.Attendances)
