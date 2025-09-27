@@ -13,7 +13,7 @@
         <div class="card-body">
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                <input  asp-for="Student.StudentId" />
+                <input  type="hidden" asp-for="Student.StudentId" />
 
                 <div class="mb-3">
                     <label asp-for="Student.FirstName" class="form-label fw-bold"></label>

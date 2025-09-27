@@ -6,7 +6,7 @@ namespace AttendanceSystem.Models
     public class Student
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)] // disables auto-increment
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)] // disables auto-increment
         public int StudentId { get; set; }
 
         public string? FirstName { get; set; }

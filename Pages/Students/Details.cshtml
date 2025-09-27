@@ -5,90 +5,103 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Student Details</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3 fw-bold">
+                            @Html.DisplayNameFor(model => model.Student.StudentId)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Student.StudentId)
+                        </dd>
 
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student.StudentId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Student.StudentId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Student.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Student.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            Total Attendances 
-        </dt>
-        <dd class="col-sm-10">
-                    @Model.Student.Attendances.Count()
-        </dd>
-        <dt class="col-sm-2">
-            Present
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Student.Attendances.Count(a => a.Status == "Present")
-        </dd>
-        <dt class="col-sm-2">
-            Absent
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Student.Attendances.Count(a => a.Status == "Absent")
-        </dd>
+                        <dt class="col-sm-3 fw-bold">
+                            @Html.DisplayNameFor(model => model.Student.FirstName)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Student.FirstName)
+                        </dd>
 
+                        <dt class="col-sm-3 fw-bold">
+                            @Html.DisplayNameFor(model => model.Student.LastName)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Student.LastName)
+                        </dd>
 
-    </dl>
+                        <dt class="col-sm-3 fw-bold">Total Attendances</dt>
+                        <dd class="col-sm-9">
+                            @Model.Student.Attendances.Count()
+                        </dd>
 
-    <h4>Attendance Records</h4>
+                        <dt class="col-sm-3 fw-bold">Present</dt>
+                        <dd class="col-sm-9 text-success fw-semibold">
+                            @Model.Student.Attendances.Count(a => a.Status == "Present")
+                        </dd>
 
-    @if (Model.Student.Attendances != null && Model.Student.Attendances.Any())
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var record in Model.Student.Attendances.OrderByDescending(a => a.Date))
-                {
-                    <tr>
-                        <td>@record.Date.ToString("MMMM dd, yyyy")</td>
-                        <td>
-                            @if (record.Status == "Present")
-                            {
-                                <span class="badge bg-success">Present</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-danger">Absent</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No attendance records found.</p>
-    }
+                        <dt class="col-sm-3 fw-bold">Absent</dt>
+                        <dd class="col-sm-9 text-danger fw-semibold">
+                            @Model.Student.Attendances.Count(a => a.Status == "Absent")
+                        </dd>
+                    </dl>
+                </div>
+            </div>
 
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Student.StudentId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+            <div class="card mt-4 shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Attendance Records</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Student.Attendances != null && Model.Student.Attendances.Any())
+                    {
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var record in Model.Student.Attendances.OrderByDescending(a => a.Date))
+                                {
+                                    <tr>
+                                        <td>@record.Date.ToString("MMMM dd, yyyy")</td>
+                                        <td>
+                                            @if (record.Status == "Present")
+                                            {
+                                                <span class="badge bg-success">Present</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Absent</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No attendance records found.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-3 text-center">
+                <a asp-page="./Edit" asp-route-id="@Model.Student.StudentId" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a asp-page="./Index" class="btn btn-secondary ms-2">
+                    ← Back to List
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
