@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
+using AttendanceSystem.Data;
+using AttendanceSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AttendanceSystem.Data;
-using AttendanceSystem.Models;
-using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceSystem.Pages.Students
 {
@@ -38,7 +39,16 @@ namespace AttendanceSystem.Pages.Students
 
             using var transaction = await _context.Database.BeginTransactionAsync();
 
-            try { 
+            try {
+                bool exists = await _context.Student.AnyAsync(s =>
+                   s.StudentId == Student.StudentId ||
+                   (s.FirstName == Student.FirstName && s.LastName == Student.LastName)
+   );
+                if(exists)
+                {
+                    TempData["ErrorMessage"] = "The Student Already Exists";
+                    return Page();
+                }
                 _context.Student.Add(Student);
                 await _context.SaveChangesAsync();
 

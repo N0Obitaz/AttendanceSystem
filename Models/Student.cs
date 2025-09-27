@@ -6,10 +6,19 @@ namespace AttendanceSystem.Models
     public class Student
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)] // disables auto-increment
+        [Display(Name ="Student Number")]
         public int StudentId { get; set; }
 
+        [Required]
+        [StringLength(30)]
+        [DataType(DataType.Text)]
+        [Display(Name = "First Name")]
+     
         public string? FirstName { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        [Display(Name ="Last Name")]
         public string? LastName { get; set; }
 
         public ICollection<Attendance>? Attendances { get; set; }

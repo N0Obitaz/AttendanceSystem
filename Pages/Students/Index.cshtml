@@ -49,9 +49,12 @@
                             {
                                 <span class="badge bg-success">Attendance Marked Present</span>
                             }
-                            else
+                            else if (item.Attendances.Any(a => a.Status == "Absent"))
                             {
                                 <span class="badge bg-danger">Attendance Marked Absent</span>
+                            } else
+                            {
+                                <span class="badge bg-warning">Attendance Marked Late</span>
                             }
                         }
                         else
