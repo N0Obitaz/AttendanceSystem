@@ -1,0 +1,22 @@
+﻿@page
+@model AttendanceSystem.Pages.GenerateQR.GenerateQRModel
+@{
+	ViewData["Title"] = "Generate QR Code";
+
+}
+
+<h2>Code Generator</h2>
+
+
+<form method="post">
+	<input type="text" name="InputText" value="@Model.InputText" placeholder="Enter text..." />
+	<input type="text" name="FileName" value="@Model.FileName" placeholder="Enter Your Name..." />
+	<button type="submit">Generate</button>
+
+</form>
+
+@if (!string.IsNullOrEmpty(Model.QRCodeBase64))
+{
+	<h3>Generated QR Code: </h3>
+	<img src="data:img/png;base64,@Model.QRCodeBase64" alt="QR Code" style="width: 500px; height: 500px;"/>
+}

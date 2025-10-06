@@ -38,21 +38,22 @@
                     <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                     <td>
                         <span class="text-dark">
-                            @item.Attendances.Count(a => a.Status == "Present") /
+                            @item.Attendances.Count(a => a.Status == "Present" || a.Status =="Late") /
                             @item.Attendances.Count()
                         </span>
                     </td>
                     <td>
                         @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today))
                         {
-                            @if (item.Attendances.Any(a => a.Status == "Present"))
+                            @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Present"))
                             {
                                 <span class="badge bg-success">Attendance Marked Present</span>
                             }
-                            else if (item.Attendances.Any(a => a.Status == "Absent"))
+                            else if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Absent"))
                             {
                                 <span class="badge bg-danger">Attendance Marked Absent</span>
-                            } else
+                            }
+                            else if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status.ToLower() == "late"))
                             {
                                 <span class="badge bg-warning">Attendance Marked Late</span>
                             }

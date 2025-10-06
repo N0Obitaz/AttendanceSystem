@@ -12,7 +12,7 @@ namespace AttendanceSystem.Models
         public DateTime Date { get; set; }
        
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         public Student? Student { get; set; }
 

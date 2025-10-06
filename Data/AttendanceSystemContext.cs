@@ -13,7 +13,7 @@ namespace AttendanceSystem.Data
             : base(options)
         {
         }
-
+        
         public DbSet<AttendanceSystem.Models.Student> Student { get; set; } = default!;
         public DbSet<AttendanceSystem.Models.Attendance> Attendances { get; set; }
         public DbSet<AttendanceSystem.Models.TransactionLog> TransactionLogs { get; set; }

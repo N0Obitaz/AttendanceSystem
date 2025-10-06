@@ -49,6 +49,10 @@
                         <dd class="col-sm-9 text-danger fw-semibold">
                             @Model.Student.Attendances.Count(a => a.Status == "Absent")
                         </dd>
+                        <dt class="col-sm-3 fw-bold">Late</dt>
+                        <dd class="col-sm-9 text-danger fw-semibold">
+                            @Model.Student.Attendances.Count(a => a.Status == "Late")
+                        </dd>
                     </dl>
                 </div>
             </div>
