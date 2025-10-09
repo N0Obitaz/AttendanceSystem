@@ -43,7 +43,8 @@
                             </td>
                             <td>
                                 <i class="bi bi-person-fill text-success"></i>
-                                @item.Student.LastName
+                                <a asp-page="../Students/Details" asp-route-id="@item.StudentId" class="text-dark">@item.Student.LastName</a>
+                                
                             </td>
                             <td class="text-center">
                                 <a asp-page="./Details" asp-route-id="@item.TransactionId" class="btn btn-sm btn-secondary me-1">

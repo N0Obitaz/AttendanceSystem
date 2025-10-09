@@ -52,7 +52,9 @@
                 </dt>
                 <dd class="col-sm-9">
                     <i class="bi bi-person-fill text-success"></i>
-                    ID: @Html.DisplayFor(model => model.TransactionLog.StudentId)
+
+                    ID: <a asp-page="../Students/Details" asp-route-id="@Model.TransactionLog.StudentId">@Html.DisplayFor(model => model.TransactionLog.StudentId)</a>
+                  
                 </dd>
             </dl>
         </div>
