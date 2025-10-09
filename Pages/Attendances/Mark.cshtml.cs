@@ -50,7 +50,7 @@ namespace AttendanceSystem.Pages.Attendances
                     var attendance = new Attendance
                     {
                         StudentId = student.StudentId,
-                        Date = DateTime.Now.Date,
+                        Date = DateTime.UtcNow,
 
                         Status = status
                     };
@@ -63,7 +63,7 @@ namespace AttendanceSystem.Pages.Attendances
                     {
                         StudentId = student.StudentId,
                         Action = $"Marked {status}",
-                        Timestamp = DateTime.Now
+                        Timestamp = DateTime.UtcNow
 
                     };
 

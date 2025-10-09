@@ -36,7 +36,7 @@
                             </td>
                             <td>
                                 <i class="bi bi-calendar-event text-primary"></i>
-                                @item.Timestamp.ToString("MMMM dd, yyyy - hh:mm tt")
+                                @item.Timestamp.AddHours(8).ToString("MMMM dd, yyyy - hh:mm tt")
                             </td>
                             <td>
                                 <span class="fw-bold text-secondary">@item.StudentId</span>

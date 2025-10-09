@@ -44,7 +44,7 @@
                 </dt>
                 <dd class="col-sm-9">
                     <i class="bi bi-calendar-event text-primary"></i>
-                    @Model.TransactionLog.Timestamp.ToString("MMMM dd, yyyy - hh:mm tt")
+                    @Model.TransactionLog.Timestamp.ToLocalTime().ToString("yyyy-MM-dd hh:mm tt")
                 </dd>
 
                 <dt class="col-sm-3 fw-bold text-secondary">
