@@ -34,7 +34,13 @@
             @foreach (var item in Model.Student)
             {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                    <td>
+                        <a asp-page="./Details" asp-route-id="@item.StudentId">
+                  @Html.DisplayFor(modelItem => item.LastName)
+                    </a>
+                    </td>
+                   
+                   
                     <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                     <td>
                         <span class="text-dark">
@@ -69,9 +75,7 @@
                         <a asp-page="./Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-success me-1">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <a asp-page="./Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-secondary me-1">
-                            <i class="bi bi-eye"></i>
-                        </a>
+                     
                         <a asp-page="./Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-danger me-1">
                             <i class="bi bi-trash"></i>
                         </a>
