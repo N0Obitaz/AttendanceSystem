@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AttendanceSystemContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AttendanceSystemContext") ?? throw new InvalidOperationException("Connection string 'AttendanceSystemContext' not found.")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 
 var app = builder.Build();
 
