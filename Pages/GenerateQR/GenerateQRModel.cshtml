@@ -37,12 +37,20 @@
 	
 	<div class="ww-50 vh-50 border border-black rounded-3 w-25 mx-auto justify-content-sm-center p-3">
 			<img src="data:img/png;base64,@Model.QRCodeBase64" alt="QR Code" style="width: 250px; height: 250px;" />
-	</div>
+		</div>
 
-	
-
+		if(!string.IsNullOrEmpty(Model.Linked))
+		{
+			<div class="text-center">
+				<a href="@Model.Linked">
+					@Model.Linked
+				</a>
+				
+			</div>
+		}
 
 }
+
 
 
 </div>

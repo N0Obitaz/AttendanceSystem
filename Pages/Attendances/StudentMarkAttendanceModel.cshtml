@@ -1,0 +1,16 @@
+﻿@page 
+@model AttendanceSystem.Pages.Attendances.StudentMarkAttendanceModel
+@{
+	ViewData["Title"] = "Student Mark Attendance";
+
+	<h1>@ViewData["Title"]</h1>
+
+	
+}
+
+@if(!string.IsNullOrEmpty(Model.Message))
+{
+	<div class="alert alert-sucess">
+		@Model.Message
+	</div>
+}

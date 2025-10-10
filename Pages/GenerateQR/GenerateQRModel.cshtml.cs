@@ -33,6 +33,8 @@ namespace AttendanceSystem.Pages.GenerateQR
 
         public string QRCodeBase64 { get; set; } = string.Empty;
 
+        [TempData]
+        public string Linked { get; set; }
         public async Task OnPost()
         {
             if (string.IsNullOrWhiteSpace(InputText))
@@ -52,7 +54,7 @@ namespace AttendanceSystem.Pages.GenerateQR
 
             var tokenService = new TokenService();
             var token = tokenService.GenerateToken(InputEmail);
-
+            
             var link = $"https://localhost:7232/Attendances/StudentMarkAttendanceModel?handler=Record&token={token}&id={InputText}&status=Present";
 
 
@@ -81,9 +83,10 @@ namespace AttendanceSystem.Pages.GenerateQR
                 var imagePath = Path.Combine(wwwRootPath, $"{safeFileName}.png");
 
                
-                System.IO.File.WriteAllBytes(imagePath, qrCodeBytes);
-          
 
+                System.IO.File.WriteAllBytes(imagePath, qrCodeBytes);
+
+                Linked = link;
                 string subject = "Your Attendance Link";
                 string body = $"<p>Dear Student,</p><p>Below is your Attendance Link.</p>" +
                     $"<a href={link}>Click Here To Mark Your Attendance </a><hr/ ><p></p><p>Best regards,<br/>Attendance System</p>";
