@@ -5,19 +5,38 @@
 
 }
 
+
+<div class="text-center">
+
 <h2>Code Generator</h2>
 
+	<div class="d-flex justify-content-center">
+		<form method="post" class="d-flex flex-column w-25 gap-3">
+			<input type="text" name="InputText" value="@Model.InputText" placeholder="Enter Student Number..." />
 
-<form method="post">
-	<input type="text" name="InputText" value="@Model.InputText" placeholder="Enter text..." />
+			<input type="email" name="InputEmail" value="@Model.InputEmail" placeholder="Enter Email" required/>
 
-	<input type="text" name="FileName" value="@Model.FileName" placeholder="Enter Your Name..." />
-	<button type="submit">Generate</button>
 
-</form>
+			<input type="text" name="LastName" value="@Model.LastName" placeholder="Enter Your Last Name..." />
+
+			<button type="submit" class="btn btn-success">Send Email</button>
+
+		</form>
+	</div>
+
+	
+	<hr />
+
+
 
 @if (!string.IsNullOrEmpty(Model.QRCodeBase64))
 {
 	<h3>Generated QR Code: </h3>
-	<img src="data:img/png;base64,@Model.QRCodeBase64" alt="QR Code" style="width: 500px; height: 500px;"/>
+
+	<img src="data:img/png;base64,@Model.QRCodeBase64" alt="QR Code" style="width: 250px; height: 250px;"/>
+
+
 }
+
+
+</div>
