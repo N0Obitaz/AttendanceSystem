@@ -6,20 +6,23 @@
 }
 
 
-<div class="text-center">
+<div class="text-center justify-center">
 
-<h2>Code Generator</h2>
+<h2>Scan The QR Code Below</h2>
 
 	<div class="d-flex justify-content-center">
 		<form method="post" class="d-flex flex-column w-25 gap-3">
-			<input type="text" name="InputText" value="@Model.InputText" placeholder="Enter Student Number..." />
 
-			<input type="email" name="InputEmail" value="@Model.InputEmail" placeholder="Enter Email" required/>
+			 <input type="text" name="InputText" value="@Model.InputText" placeholder="Enter Student Number..." />
+
+			<input type="email" asp-for="InputEmail "name="InputEmail" value="@Model.InputEmail" placeholder="Enter Email" required/>
 
 
-			<input type="text" name="LastName" value="@Model.LastName" placeholder="Enter Your Last Name..." />
+			<input type="text" name="LastName" value="@Model.LastName" placeholder="Enter Your Last Name..." /> 
+		
+			
 
-			<button type="submit" class="btn btn-success">Send Email</button>
+			<button type="submit" class="btn btn-success">Request QR Code</button>
 
 		</form>
 	</div>
@@ -31,9 +34,12 @@
 
 @if (!string.IsNullOrEmpty(Model.QRCodeBase64))
 {
-	<h3>Generated QR Code: </h3>
+	
+	<div class="ww-50 vh-50 border border-black rounded-3 w-25 mx-auto justify-content-sm-center p-3">
+			<img src="data:img/png;base64,@Model.QRCodeBase64" alt="QR Code" style="width: 250px; height: 250px;" />
+	</div>
 
-	<img src="data:img/png;base64,@Model.QRCodeBase64" alt="QR Code" style="width: 250px; height: 250px;"/>
+	
 
 
 }

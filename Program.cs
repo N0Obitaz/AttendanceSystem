@@ -2,12 +2,23 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AttendanceSystem.Services;
+using AttendanceSystem.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Email Settings
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+
+// Register Email Service
+
+builder.Services.AddTransient<EmailService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<AttendanceSystemContext>(options =>
+builder.Services.AddDbContext<AttendanceSystemContext>(options =>   
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 
 var app = builder.Build();

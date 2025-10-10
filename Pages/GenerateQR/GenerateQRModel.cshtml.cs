@@ -5,13 +5,21 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Newtonsoft.Json;
+using AttendanceSystem.Services;
+using System.Threading.Tasks;
 
-using System.Net.Mail;
 
 namespace AttendanceSystem.Pages.GenerateQR
 {
     public class GenerateQRModel : PageModel
     {
+
+        private readonly EmailService _emailService;
+
+        public GenerateQRModel(EmailService emailService)
+        {
+            _emailService = emailService;
+        }
 
         [BindProperty]
         public string InputText { get; set; } = string.Empty;
@@ -25,7 +33,7 @@ namespace AttendanceSystem.Pages.GenerateQR
 
         public string QRCodeBase64 { get; set; } = string.Empty;
 
-        public void OnPost()
+        public async Task OnPost()
         {
             if (string.IsNullOrWhiteSpace(InputText))
                 return;
@@ -40,6 +48,12 @@ namespace AttendanceSystem.Pages.GenerateQR
 
             //convert into json using newtonsoft library
             string jsonString = JsonConvert.SerializeObject(JsonContent, Formatting.Indented);
+
+
+            var tokenService = new TokenService();
+            var token = tokenService.GenerateToken(InputEmail);
+
+            var link = $"https://localhost:7232/Attendances/StudentMarkAttendanceModel?handler=Record&token={token}&id={InputText}&status=Present";
 
 
             using (var qrGenerator = new QRCodeGenerator())
@@ -68,11 +82,17 @@ namespace AttendanceSystem.Pages.GenerateQR
 
                
                 System.IO.File.WriteAllBytes(imagePath, qrCodeBytes);
+          
 
+                string subject = "Your Attendance Link";
+                string body = $"<p>Dear Student,</p><p>Below is your Attendance Link.</p>" +
+                    $"<a href={link}>Click Here To Mark Your Attendance </a><hr/ ><p></p><p>Best regards,<br/>Attendance System</p>";
 
-
-
+                await _emailService.SendEmailAsync(InputEmail, subject, body);
             }
+
+          
+
         }
     }
 }
