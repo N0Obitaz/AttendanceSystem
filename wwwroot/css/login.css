@@ -6,7 +6,7 @@
 
 body,
 html {
-    height: 55%;
+    height: 60%;
     background: #001840;
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@ html {
     justify-content: center;
     flex-direction: row-reverse;
     height: 70vh;
-    margin: 10rem;
+    margin: 0 auto;
     max-width: 50vw;
     width: 90%;
 
