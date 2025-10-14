@@ -7,10 +7,13 @@ using AttendanceSystem.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using AttendanceSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceSystem.Pages.Students
 {
+    [CustomAuthorize]
+
     public class IndexModel : PageModel
     {
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;

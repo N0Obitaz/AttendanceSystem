@@ -7,9 +7,11 @@ using System.Drawing;
 using Newtonsoft.Json;
 using AttendanceSystem.Services;
 
+
 namespace AttendanceSystem.Pages.ScanQR
 {
     [IgnoreAntiforgeryToken] // allows JS fetch() without token
+    [CustomAuthorize]
     public class ScanQRModel : PageModel
     {
         [BindProperty]

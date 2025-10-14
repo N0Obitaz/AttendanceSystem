@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AttendanceSystem.Services;
 using AttendanceSystem.Models;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,14 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = "AttendanceSystem.Session";
+});
 
 
 
@@ -46,6 +55,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

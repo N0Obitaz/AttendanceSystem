@@ -13,10 +13,9 @@ namespace AttendanceSystem.Pages
 
         [BindProperty]
         public string? Username { get; set; }
+
         [BindProperty]
         public string? Password { get; set; }
-
-        public string Role { get; set; } = "Student";
 
         public IndexModel(ILogger<IndexModel> logger, AttendanceSystem.Data.AttendanceSystemContext context)
         {
@@ -24,45 +23,44 @@ namespace AttendanceSystem.Pages
             _context = context;
         }
 
-        public IList<Administrator> Admin { get; set; }
-
         [HttpPost]
         public async Task<IActionResult> OnPostAsync()
         {
-
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 ModelState.AddModelError(string.Empty, "Username and Password are required.");
                 return Page();
             }
-            
+
+            // First check if it's an admin
             var admin = await _context.Admin
                 .FirstOrDefaultAsync(a => a.Username.ToLower() == Username.ToLower() && a.Password == Password);
 
-            if (admin.Role != "Admin")
-            {
-                var student = await _context.Student
-                    .FirstOrDefaultAsync(s => s.Username.ToLower() == Username.ToLower() && s.Password == Password);
-
-                if (student != null)
-                {
-                    return RedirectToPage("/ScanQR/ScanQR");
-                } else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid username or password");
-                }
-            }
             if (admin != null)
             {
-                // Successful login - redirect to existing admin page
-                return RedirectToPage("/Students/Index"); // Make sure this page exists
+                // Admin login successful
+                HttpContext.Session.SetString("IsLoggedIn", "true");
+                HttpContext.Session.SetString("Username", Username);
+                HttpContext.Session.SetString("Role", "Admin");
+                return RedirectToPage("/Students/Index");
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid username or password.");
-                return Page();
-            }
-        }
 
+            // If not admin, check if it's a student
+            var student = await _context.Student
+                .FirstOrDefaultAsync(s => s.Username.ToLower() == Username.ToLower() && s.Password == Password);
+
+            if (student != null)
+            {
+                // Student login successful
+                HttpContext.Session.SetString("IsLoggedIn", "true");
+                HttpContext.Session.SetString("Username", Username);
+                HttpContext.Session.SetString("Role", "Student");
+                return RedirectToPage("/ScanQR/ScanQR");
+            }
+
+            // If neither admin nor student found
+            ModelState.AddModelError(string.Empty, "Invalid username or password.");
+            return Page();
+        }
     }
 }
