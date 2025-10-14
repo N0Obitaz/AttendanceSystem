@@ -95,3 +95,13 @@ html {
         width: 30vw;
         height: 70vh;
     }
+
+.validation-summary-errors ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.validation-summary-errors li {
+    list-style-type: none;
+}
