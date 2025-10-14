@@ -20,18 +20,27 @@ namespace AttendanceSystem.Pages.ScanQR
         public void OnPost()
         {
             OutputText = ScanQRCode(InputFile);
+            try
+            {
+                var jsonData = JsonConvert.DeserializeObject<dynamic>(OutputText);
+                OutputEmail = jsonData?.Email;
+                LastName = jsonData?.LastName;
+                StudentNumber = jsonData?.StudentNumber;
+            } catch (Exception ex)
+            {
+                OutputEmail = "Error parsing JSON: " + ex.Message;
+                LastName = "Error parsing JSON: " + ex.Message;
+                StudentNumber = "Error parsing JSON: " + ex.Message;
+            }
 
-            var jsonData = JsonConvert.DeserializeObject<dynamic>(OutputText);
 
-            OutputEmail = jsonData?.Email;
-            LastName = jsonData?.LastName;
-            StudentNumber = jsonData?.StudentNumber;
+
         }
 
         //decode QR
         public string ScanQRCode(IFormFile file)
         {
-            if (file == null || file.Length == 0)
+            if (file == null || file.Length == 0)   
                 return "No File Detected";
 
             try
@@ -41,8 +50,6 @@ namespace AttendanceSystem.Pages.ScanQR
 
                 var reader = new BarcodeReaderGeneric();
                 var result = reader.Decode(new BitmapLuminanceSource(bitmap));
-
-                
 
              
                 return result?.Text ?? "No QR Code Detected";
