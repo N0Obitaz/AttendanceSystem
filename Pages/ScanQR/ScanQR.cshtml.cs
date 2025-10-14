@@ -41,7 +41,7 @@ namespace AttendanceSystem.Pages.ScanQR
         }
 
         // Handler 2: Log GPS Location (called via JS fetch)
-        [HttpPost]
+        
         public IActionResult OnPostLogLocation([FromBody] LocationData data)
         {
             if (data == null)
