@@ -13,7 +13,7 @@ namespace AttendanceSystem.Models
         [StringLength(30)]
         [DataType(DataType.Text)]
         [Display(Name = "First Name")]
-     
+       
         public string? FirstName { get; set; }
 
         [Required]
@@ -21,6 +21,9 @@ namespace AttendanceSystem.Models
         [Display(Name ="Last Name")]
         public string? LastName { get; set; }
 
+        public string? Username { get; set; }
+  
+        public string? Password { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }
         public ICollection<TransactionLog>? TransactionLogs { get; set; }
 
