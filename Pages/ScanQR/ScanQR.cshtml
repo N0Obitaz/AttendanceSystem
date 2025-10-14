@@ -1,0 +1,32 @@
+﻿@page
+@model AttendanceSystem.Pages.ScanQR.ScanQRModel
+@{
+    ViewData["Title"] = "Scan QR Code";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<div class="justify-content-center d-flex">
+ 
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" asp-for="InputFile" accept="image/*" />
+        <button type="submit" class="btn btn-success">Scan</button>
+    </form>
+
+</div>
+
+
+@if (!string.IsNullOrEmpty(Model.OutputText))
+{
+
+    <div class="text-center">
+        <h2>Scanned QR Code Data:</h2>
+
+        <p>@Model.StudentNumber</p>
+        <p>@Model.OutputEmail</p>
+        <p>@Model.LastName</p>
+
+        </div>
+    
+  
+}

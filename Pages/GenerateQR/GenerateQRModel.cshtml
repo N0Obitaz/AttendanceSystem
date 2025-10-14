@@ -18,11 +18,14 @@
 			<input type="email" asp-for="InputEmail "name="InputEmail" value="@Model.InputEmail" placeholder="Enter Email" required/>
 
 
-			<input type="text" name="LastName" value="@Model.LastName" placeholder="Enter Your Last Name..." /> 
-		
-			
+			<input type="text" name="LastName" value="@Model.LastName" placeholder="Enter Your Last Name..." />
 
+			<!-- Files Can be Uploaded-->
+			<input type="file" name="UploadedFile" asp-for="InputFile" />
 			<button type="submit" class="btn btn-success">Request QR Code</button>
+
+			
+			
 
 		</form>
 	</div>

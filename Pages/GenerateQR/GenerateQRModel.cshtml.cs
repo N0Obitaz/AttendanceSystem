@@ -1,12 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using QRCoder;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Newtonsoft.Json;
-using AttendanceSystem.Services;
 using System.Threading.Tasks;
+using AttendanceSystem.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
+using QRCoder;
+using ZXing;
+using ZXing.Windows.Compatibility;
+using ZXing.Common;
+using ZXing.QrCode;
+
 
 
 namespace AttendanceSystem.Pages.GenerateQR
@@ -30,6 +35,23 @@ namespace AttendanceSystem.Pages.GenerateQR
         public string LastName { get; set; } = string.Empty;
         [BindProperty]
         public string FileName { get; set; } = string.Empty;
+
+
+        //create a bind property for file upload
+        [BindProperty]
+        public IFormFile InputFile { get; set; }
+
+        // Create a property to hold the generated QR code image as a base64 string
+        [BindProperty]
+        public string? OutputText{ get; set; } 
+
+        [BindProperty]
+        public string? OutputEmail { get; set; }
+
+        [BindProperty]
+        public string? OutputLastName { get; set; }
+
+
 
         public string QRCodeBase64 { get; set; } = string.Empty;
 
@@ -91,11 +113,22 @@ namespace AttendanceSystem.Pages.GenerateQR
                 string body = $"<p>Dear Student,</p><p>Below is your Attendance Link.</p>" +
                     $"<a href={link}>Click Here To Mark Your Attendance </a><hr/ ><p></p><p>Best regards,<br/>Attendance System</p>";
 
-                await _emailService.SendEmailAsync(InputEmail, subject, body);
+               // await _emailService.SendEmailAsync(InputEmail, subject, body);
             }
 
-          
+            // Decode the QR code to verify its content (for demonstration purposes)
+            // what library to use to decode the qr code
+            // using (var ms = new MemoryStream(Convert.FromBase64String(QRCodeBase64)))
+
+           // decode the submitted qr code png file into json using qrcode library
+           // use zxing.net library to decode the qr code png file
+           
+
+        }
+       
+
+
 
         }
     }
-}
+

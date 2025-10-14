@@ -36,18 +36,23 @@ namespace AttendanceSystem.Pages.Attendances
                 bool alreadyRecorded = await _context.Attendances
                     .AnyAsync(a => a.StudentId == student.StudentId && a.Date.Date == today);
 
-                var attendance = new Attendance
+                if(!alreadyRecorded)
                 {
-                    StudentId = student.StudentId,
-                    Date = DateTime.UtcNow.AddHours(8),
-                    Status = status
-                };
+                    var attendance = new Attendance
+                    {
+                        StudentId = student.StudentId,
+                        Date = DateTime.UtcNow.AddHours(8),
+                        Status = status
+                    };
 
-                _context.Attendances.Add(attendance);
-                await _context.SaveChangesAsync();
-                // valid
-                Message = $"Attendance recorded for {email}";
-                return Page();
+                    _context.Attendances.Add(attendance);
+                    await _context.SaveChangesAsync();
+                    // valid
+                    Message = $"Attendance recorded for {email}";
+                    return RedirectToPage("../Students/Index");
+                }
+
+              
             }
 
             // expired

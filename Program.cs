@@ -1,11 +1,18 @@
 ﻿using AttendanceSystem.Data;
-
+using Serilog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AttendanceSystem.Services;
 using AttendanceSystem.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Set up Serilog for logging
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Configure Email Settings
 builder.Services.Configure<EmailSettings>(

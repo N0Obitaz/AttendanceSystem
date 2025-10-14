@@ -1,0 +1,40 @@
+﻿@page
+@model AttendanceSystem.Pages.LogLocationModel
+
+<h1>GPS Location Logger</h1>
+
+<button id="btnGetLocation" class="btn btn-primary">Log My Location</button>
+
+<p id="status"></p>
+
+<script>
+    document.getElementById('btnGetLocation').addEventListener('click', () => {
+        if (navigator.geolocation) {
+            document.getElementById('status').textContent = "Getting your location...";
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const coords = {
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy
+                    };
+
+                    document.getElementById('status').textContent =
+                        `Lat: ${coords.latitude}, Lon: ${coords.longitude}`;
+
+                    // Send coordinates to the server
+                    fetch('/LogLocation', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(coords)
+                    });
+                },
+                err => {
+                    document.getElementById('status').textContent = "Error: " + err.message;
+                }
+            );
+        } else {
+            document.getElementById('status').textContent = "Geolocation not supported.";
+        }
+    });
+</script>
