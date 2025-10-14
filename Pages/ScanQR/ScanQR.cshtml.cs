@@ -5,6 +5,7 @@ using ZXing;
 using ZXing.Windows.Compatibility;
 using System.Drawing;
 using Newtonsoft.Json;
+using AttendanceSystem.Services;
 
 namespace AttendanceSystem.Pages.ScanQR
 {
@@ -47,10 +48,34 @@ namespace AttendanceSystem.Pages.ScanQR
             if (data == null)
                 return BadRequest();
 
-            Log.Information("GPS: Lat={Latitude}, Lon={Longitude}, Accuracy={Accuracy}m",
-                data.Latitude, data.Longitude, data.Accuracy);
 
-            return new JsonResult(new { message = "Location logged successfully!" });
+            var locationService = new LocationService();
+            var validation = locationService.ValidateLocation(data.Latitude, data.Longitude, data.Accuracy);
+
+            if (validation.IsWithinPerimeter)
+            {
+                Log.Information($"Location Validated", validation.Message);
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = validation.Message,
+                    distance = validation.Distance
+                });
+            }
+            else
+            {
+                Log.Warning("Location INVALID: {Message}", validation.Message);
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = validation.Message,
+                    distance = validation.Distance
+                });
+            }
+            //Log.Information("GPS: Lat={Latitude}, Lon={Longitude}, Accuracy={Accuracy}m",
+            //    data.Latitude, data.Longitude, data.Accuracy);
+
+            //return new JsonResult(new { message = "Location logged successfully!" });
         }
 
         // Helper: QR Code Decoding
