@@ -10,10 +10,10 @@
 
 <hr />
 
-<h3>QR Output</h3>
+@* <h3>QR Output</h3>
 <p><strong>Email:</strong> @Model.OutputEmail</p>
 <p><strong>Last Name:</strong> @Model.LastName</p>
-<p><strong>Student Number:</strong> @Model.StudentNumber</p>
+<p><strong>Student Number:</strong> @Model.StudentNumber</p> *@
 
 <hr />
 
@@ -33,6 +33,7 @@
 @section Scripts {
     <script src="~/js/loglocation.js"></script>
 }
+
 @{
     if(Model.IsLocated == true )
     {
