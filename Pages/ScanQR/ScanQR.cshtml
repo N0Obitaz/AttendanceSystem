@@ -1,34 +1,56 @@
 ﻿@page
 @model AttendanceSystem.Pages.ScanQR.ScanQRModel
 @{
-    ViewData["Title"] = "Scan QR Code";
+    ViewData["Title"] = "Scan QR & Log Location";
 }
-<h1>@ViewData["Title"]</h1>
 
+<h2>@ViewData["Title"]</h2>
 
-<div class="justify-content-center d-flex">
- 
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" asp-for="InputFile" accept="image/*" />
-        <button type="submit" class="btn btn-success">Scan</button>
-    </form>
+<!-- QR Scanner Form -->
+<form method="post" enctype="multipart/form-data">
+    <input type="file" asp-for="InputFile" />
+    <button type="submit" asp-page-handler="Scan">Scan QR</button>
+</form>
 
-</div>
+<hr />
 
+<h3>QR Output</h3>
+<p>Email: @Model.OutputEmail</p>
+<p>Last Name: @Model.LastName</p>
+<p>Student Number: @Model.StudentNumber</p>
 
-@if (!string.IsNullOrEmpty(Model.OutputText))
-{
+<hr />
 
-    <div class="text-center">
-        <h2>Scanned QR Code Data:</h2>
+<!-- Button to Log Location -->
+<button id="btnLocation">Log My Location</button>
+<p id="locationResult"></p>
 
-        @* <p>@Model.StudentNumber</p>
-        <p>@Model.OutputEmail</p>
-        <p>@Model.LastName</p> *@
+@section Scripts {
+    <script>
+        document.getElementById("btnLocation").addEventListener("click", async () => {
+            if (!navigator.geolocation) {
+                alert("Geolocation not supported by this browser.");
+                return;
+            }
 
-        <p>@Model.OutputText</p>
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const data = {
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude,
+                    accuracy: pos.coords.accuracy
+                };
 
-        </div>
-    
-  
+                const response = await fetch("?handler=LogLocation", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                document.getElementById("locationResult").innerText = result.message;
+            }, (err) => {
+                alert("Error getting location: " + err.message);
+            });
+        });
+    </script>
 }

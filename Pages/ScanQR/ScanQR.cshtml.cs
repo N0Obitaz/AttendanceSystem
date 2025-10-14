@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 using ZXing;
 using ZXing.Windows.Compatibility;
 using System.Drawing;
 using Newtonsoft.Json;
+
 namespace AttendanceSystem.Pages.ScanQR
 {
+    [IgnoreAntiforgeryToken] // allows JS fetch() without token
     public class ScanQRModel : PageModel
     {
         [BindProperty]
@@ -16,31 +19,44 @@ namespace AttendanceSystem.Pages.ScanQR
         public string? OutputEmail { get; set; }
         public string? LastName { get; set; }
         public string? StudentNumber { get; set; }
-        // Handle form submission
-        public void OnPost()
+
+        //  Handler 1: Decode QR Code
+        public void OnPostScan()
         {
             OutputText = ScanQRCode(InputFile);
+
             try
             {
                 var jsonData = JsonConvert.DeserializeObject<dynamic>(OutputText);
                 OutputEmail = jsonData?.Email;
                 LastName = jsonData?.LastName;
                 StudentNumber = jsonData?.StudentNumber;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 OutputEmail = "Error parsing JSON: " + ex.Message;
                 LastName = "Error parsing JSON: " + ex.Message;
                 StudentNumber = "Error parsing JSON: " + ex.Message;
             }
-
-
-
         }
 
-        //decode QR
-        public string ScanQRCode(IFormFile file)
+        // Handler 2: Log GPS Location (called via JS fetch)
+        [HttpPost]
+        public IActionResult OnPostLogLocation([FromBody] LocationData data)
         {
-            if (file == null || file.Length == 0)   
+            if (data == null)
+                return BadRequest();
+
+            Log.Information("GPS: Lat={Latitude}, Lon={Longitude}, Accuracy={Accuracy}m",
+                data.Latitude, data.Longitude, data.Accuracy);
+
+            return new JsonResult(new { message = "Location logged successfully!" });
+        }
+
+        // Helper: QR Code Decoding
+        private string ScanQRCode(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
                 return "No File Detected";
 
             try
@@ -51,13 +67,20 @@ namespace AttendanceSystem.Pages.ScanQR
                 var reader = new BarcodeReaderGeneric();
                 var result = reader.Decode(new BitmapLuminanceSource(bitmap));
 
-             
                 return result?.Text ?? "No QR Code Detected";
             }
             catch (Exception ex)
             {
-                return "Error Decoding QR Code" + ex;
+                return "Error Decoding QR Code: " + ex.Message;
             }
+        }
+
+        // Location data class
+        public class LocationData
+        {
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+            public double Accuracy { get; set; }
         }
     }
 }
