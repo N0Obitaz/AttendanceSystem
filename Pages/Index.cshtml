@@ -1,5 +1,5 @@
 ﻿@page
-@model IndexModel
+@model AttendanceSystem.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
     ViewData["HideHeader"] = true;
@@ -45,11 +45,11 @@
 
 <div class="container">
     <div class="left">
-        <form>
+        <form method="post">
             <h1>LOGIN</h1>
             <h3>Login to your account</h3>
-            <input type="email" class="email" name="email" placeholder="Email" />
-            <input type="password" class="pass" name="pass" placeholder="Password">
+            <input type="text" class="text" name="Username" placeholder="Username" />
+            <input type="password" class="pass" name="Password" placeholder="Password">
             <a href="#" class="for">Forgot Password</a>
             <button>Login</button>
             <p>Doesn't have an account? <a href="#">Sign Up</a></p>
@@ -61,3 +61,6 @@
     </div>
 </div>
 
+
+
+    

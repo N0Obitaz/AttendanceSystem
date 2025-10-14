@@ -1,0 +1,54 @@
+﻿@page
+@model AttendanceSystem.Pages.Admin.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Admin) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.AdminId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.AdminId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.AdminId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -50,5 +50,6 @@ namespace AttendanceSystem.Data
                 new Student { StudentId = 2300530, FirstName = "Marie Cris", LastName = "Reboltan" }
                 );
         }
+        public DbSet<AttendanceSystem.Models.Administrator> Admin { get; set; } = default!;
     }
 }
