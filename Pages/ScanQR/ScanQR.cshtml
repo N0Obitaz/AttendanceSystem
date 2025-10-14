@@ -1,16 +1,12 @@
 ﻿@page
 @model AttendanceSystem.Pages.ScanQR.ScanQRModel
 @{
-    ViewData["Title"] = "Scan QR & Log Location";
+    ViewData["Title"] = "Mark Attendance";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<!-- QR Scanner Form -->
-<form method="post" enctype="multipart/form-data">
-    <input type="file" asp-for="InputFile" />
-    <button type="submit" asp-page-handler="Scan">Scan QR</button>
-</form>
+
 
 <hr />
 
@@ -37,6 +33,15 @@
 @section Scripts {
     <script src="~/js/loglocation.js"></script>
 }
-  
+@{
+    if(Model.IsLocated == true )
+    {
+        <form method="post" enctype="multipart/form-data"> 
+            <input type="file" asp-for="InputFile" />
+            <button type="submit" asp-page-handler="Scan">Upload</button>
+        </form>
+    }
+
+  }
 
 

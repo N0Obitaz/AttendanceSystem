@@ -21,6 +21,8 @@ namespace AttendanceSystem.Pages.ScanQR
         public string? LastName { get; set; }
         public string? StudentNumber { get; set; }
 
+        public bool? IsLocated { get; set; } 
+
         //  Handler 1: Decode QR Code
         public void OnPostScan()
         {
@@ -57,6 +59,7 @@ namespace AttendanceSystem.Pages.ScanQR
                 Log.Information($"Location Validated", validation.Message);
                 return new JsonResult(new
                 {
+                    IsLocated = true,
                     success = true,
                     message = validation.Message,
                     distance = validation.Distance
@@ -67,6 +70,7 @@ namespace AttendanceSystem.Pages.ScanQR
                 Log.Warning("Location INVALID: {Message}", validation.Message);
                 return new JsonResult(new
                 {
+                    IsLocated = false,
                     success = false,
                     message = validation.Message,
                     distance = validation.Distance
