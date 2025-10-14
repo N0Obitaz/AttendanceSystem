@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="container mt-5">
+@* <div class="container mt-5">
     <div class="text-center">
         <h1 class="display-10 fw-bold text-primary mb-3">
             <i class="bi bi-clipboard-check"></i> Attendance Management System
@@ -36,4 +36,23 @@
             </a>
         </div>
     </div>
+</div> *@
+
+<div class="container">
+    <div class="left">
+        <form>
+            <h1>LOGIN</h1>
+            <h3>Login to your account</h3>
+            <input type="email" class="email" name="email" placeholder="Email" />
+            <input type="password" class="pass" name="pass" placeholder="Password">
+            <a href="#" class="for">Forgot Password</a>
+            <button>Login</button>
+            <p>Doesn't have an account? <a href="#">Sign Up</a></p>
+
+        </form>
+    </div>
+    <div class="right">
+        <img src="~/images/login.png" />
+    </div>
 </div>
+
