@@ -39,6 +39,11 @@
                         document.getElementById("locationSuccess").innerText = "Please wait for your attendance to be marked"
                         setTimeout(() => window.location.reload(), 5000);
 
+                        //go to a different page after 5 seconds
+                        setTimeout(() => {
+                            window.location.href = '../students/index', 10000
+                        })
+
                     }
                 } catch (e) {
                     console.error("Invalid JSON from server:", e);
