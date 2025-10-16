@@ -3,10 +3,10 @@
     public class LocationService
     {
         // Your classroom location
-        private const double ClassroomLat = 14.710671;
-        private const double ClassroomLon = 121.089839;
+        private const double ClassroomLat = 14.729059;
+        private const double ClassroomLon = 121.187609;
         private const double AllowedRadius = 50; // 50 meters
-        private const double MinimumAccuracy = 200; // Require GPS accuracy better than 20m
+        private const double MinimumAccuracy = 300; // Require GPS accuracy better than 20m
 
         public (bool IsWithinPerimeter, double Distance, string Message)
             ValidateLocation(double userLat, double userLon, double userAccuracy)
@@ -22,11 +22,11 @@
 
             if (distance <= AllowedRadius)
             {
-                return (true, distance, $"Within perimeter: {distance:F1}m from classroom");
+                return (true, distance, $"Within The School Premises: {distance:F1}m from classroom");
             }
             else
             {
-                return (false, distance, $"Outside perimeter: {distance:F1}m from classroom");
+                return (false, distance, $"Outside The School Premises: {distance:F1}m from classroom");
             }
         }
 

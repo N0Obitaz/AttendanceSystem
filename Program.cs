@@ -16,15 +16,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-    options.Cookie.Name = "AttendanceSystem.Session";
-});
-
-
+builder.Services.AddSession();
 
 // Configure Email Settings
 builder.Services.Configure<EmailSettings>(

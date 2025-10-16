@@ -21,20 +21,36 @@
                     accuracy: pos.coords.accuracy
                 };
 
-                try {
-                    const response = await fetch("?handler=LogLocation", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data)
-                    });
+                const response = await fetch("?handler=LogLocation", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
 
-                    const result = await response.json();
-                    document.getElementById("locationResult").innerText = result.message;
-                     document.getElementById("locationResult").innerText = result.success;
-                } catch (fetchError) {
-                    console.error("Fetch error:", fetchError);
-                    document.getElementById("locationResult").innerText = "Error sending location to server";
+                let result;
+                try {
+                    result = await response.json();
+
+                    if (result.success) {
+                        var cancelBtn = document.getElementById("cancelBtn");
+
+                        cancelBtn.style.display = "inline-block";
+                        document.getElementById("locationResult").innerText = result.message;
+                        document.getElementById("locationSuccess").innerText = "Please wait for your attendance to be marked"
+                        setTimeout(() => window.location.reload(), 5000);
+
+                    }
+                } catch (e) {
+                    console.error("Invalid JSON from server:", e);
+                    const text = await response.text();
+                    console.log("Raw response:", text);
+                    document.getElementById("locationResult").innerText = "Server returned invalid JSON.";
+                    return;
                 }
+      
+               
+               
+
             }, (err) => {
                 console.error("Geolocation error:", err);
                 // Proper error handling for PositionError
@@ -57,7 +73,9 @@
                 document.getElementById("locationResult").innerText = errorMessage;
             }, {
                 enableHighAccuracy: true,
-                timeout: 10000, // 10 seconds
+                timeout: 5000, // 10 seconds
                 maximumAge: 0 // Don't use cached position
             });
-        });
+ });
+
+

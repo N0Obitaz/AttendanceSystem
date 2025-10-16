@@ -29,6 +29,7 @@ namespace AttendanceSystem.Pages.Students
 
         public async Task OnGetAsync()
         {
+
             // load attendance records
             Student = await _context.Student
                .Include(s => s.Attendances) 

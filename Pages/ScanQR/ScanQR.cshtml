@@ -2,47 +2,74 @@
 @model AttendanceSystem.Pages.ScanQR.ScanQRModel
 @{
     ViewData["Title"] = "Mark Attendance";
+   
 }
 
 <h2>@ViewData["Title"]</h2>
 
+<form method="post" enctype="multipart/form-data">
+    <input type="file" asp-for="InputFile" />
+    <img src="~/images/.png" alt="QR Code" />
+    <button type="submit" asp-page-handler="Scan">Upload</button>
+</form>
+
+@if (@Model.OutputText != null)
+{
+    <hr />
+
+    <div class="alert alert-success mt-3">
+		<strong>Success!</strong> QR Code scanned successfully.
+        <h3>QR Output</h3>
+        <p><strong>Email:</strong> @Model.OutputEmail</p>
+        <p><strong>Last Name:</strong> @Model.LastName</p>
+        <p><strong>Student Number:</strong> @Model.StudentNumber</p>
+    </div>
+    
+
+    <hr />
 
 
-<hr />
-
-@* <h3>QR Output</h3>
-<p><strong>Email:</strong> @Model.OutputEmail</p>
-<p><strong>Last Name:</strong> @Model.LastName</p>
-<p><strong>Student Number:</strong> @Model.StudentNumber</p> *@
-
-<hr />
 
 <!-- Location Section -->
-<h3>My Location</h3>
+<h3>Check your Location</h3>
 <button id="btnLocation">Log My Location</button>
 
-<div id="locationDisplay" style="margin-top:10px;">
+<div id="locationDisplay" style="margin-top:10px; display: none">
     <p><strong>Latitude:</strong> <span id="lat">—</span></p>
     <p><strong>Longitude:</strong> <span id="lon">—</span></p>
     <p><strong>Accuracy:</strong> <span id="acc">—</span> meters</p>
 </div>
 
-<p id="locationResult" style="margin-top:10px; color:green;"></p>
-<p id="LocationSuccess" style="margin-top:10px; color:green;"></p>
+<p id="locationResult" class="alert alert-success mt-3"></p>
+    <p id="locationSuccess" class="alert alert-warning mt-3"></p>
+
+    <button id="cancelBtn" class="btn btn-danger" style="display: none;">Cancel</button>
+
+
 
 @section Scripts {
     <script src="~/js/loglocation.js"></script>
 }
 
-@{
-    if(Model.IsLocated == true )
-    {
-        <form method="post" enctype="multipart/form-data"> 
-            <input type="file" asp-for="InputFile" />
-            <button type="submit" asp-page-handler="Scan">Upload</button>
-        </form>
-    }
 
-  }
+
+        
+@if(TempData["isValid"] != null)
+{
+
+
+        <div class="alert alert-success mt-lg-4">
+            <strong>Attendance Marked Successfully!</strong>
+        </div>
+        @* <h1>@TempData["isValid"].ToString()</h1> *@
+        
+        
+    
+
+}
+
+
+}
+
 
 

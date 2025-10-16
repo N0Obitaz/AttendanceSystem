@@ -113,7 +113,7 @@ namespace AttendanceSystem.Pages.GenerateQR
                 string body = $"<p>Dear Student,</p><p>Below is your Attendance Link.</p>" +
                     $"<a href={link}>Click Here To Mark Your Attendance </a><hr/ ><p></p><p>Best regards,<br/>Attendance System</p>";
 
-               // await _emailService.SendEmailAsync(InputEmail, subject, body);
+               await _emailService.SendEmailAsync(InputEmail, subject, body);
             }
 
             // Decode the QR code to verify its content (for demonstration purposes)

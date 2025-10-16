@@ -365,3 +365,4 @@ FodyWeavers.xsd
 # appsettings.json files that contain sensitive data
 appsettings*.json
 
+/Pages/ScanQR/ScanQR.cshtml.cs
