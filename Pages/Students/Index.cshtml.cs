@@ -4,23 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using AttendanceSystem.Data;
 using AttendanceSystem.Models;
-
+using AttendanceSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AttendanceSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceSystem.Pages.Students
 {
-    [CustomAuthorize]
 
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
+        
        
         public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context)
         {
             _context = context;
+         
 
           
         }
@@ -29,7 +31,7 @@ namespace AttendanceSystem.Pages.Students
 
         public async Task OnGetAsync()
         {
-
+          
             // load attendance records
             Student = await _context.Student
                .Include(s => s.Attendances) 

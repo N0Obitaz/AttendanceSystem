@@ -25,8 +25,27 @@ builder.Services.Configure<EmailSettings>(
 // Register Email Service
 builder.Services.AddTransient<EmailService>();
 
+// ADD AUTHENTICATION CONFIGURATION
+builder.Services.AddAuthentication("CustomSession")
+    .AddCookie("CustomSession", options =>
+    {
+        options.LoginPath = "/Index";           // Redirect when not logged in
+        options.LogoutPath = "/Logout/Logout";         // Optional logout route
+        options.AccessDeniedPath = "/AccessDenied";   // Optional "no access" route
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+    });
+
+
+
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Students");
+    options.Conventions.AuthorizeFolder("/ScanQR");
+    options.Conventions.AuthorizeFolder("/TransactionLogs");
+    options.Conventions.AllowAnonymousToPage("/Index");
+});
 
 builder.Services.AddDbContext<AttendanceSystemContext>(options =>   
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
@@ -46,9 +65,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+// ADD THIS MIDDLEWARE - ORDER IS CRITICAL!
+app.UseSession();      // Session must come before Authentication
 
-app.UseSession();
+
+app.UseAuthentication(); // Add this line - it was missing
+app.UseAuthorization();  // This was already here
 
 app.MapRazorPages();
 

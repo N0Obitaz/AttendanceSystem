@@ -11,13 +11,16 @@ namespace AttendanceSystem.Services
             // Important: Check if session is available
             if (context.HttpContext.Session == null)
             {
-                context.Result = new RedirectToPageResult("/Index");
+                context.Result = new RedirectToPageResult("/AccessDenied");
                 return;
             }
 
             var isLoggedIn = context.HttpContext.Session.GetString("IsLoggedIn");
 
-            if (string.IsNullOrEmpty(isLoggedIn) || isLoggedIn != "true")
+            var username = context.HttpContext.Session.GetString("Username")
+                ?? context.HttpContext.Session.GetString("CurrentUser");
+
+            if (isLoggedIn != "true" || string.IsNullOrEmpty(username))
             {
                 context.Result = new RedirectToPageResult("/Index");
                 return;

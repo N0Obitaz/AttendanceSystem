@@ -4,16 +4,23 @@
     ViewData["Title"] = "Logout";
 }
 
-<div class="container mt-5 text-center">
-    <div class="alert alert-info">
-        <h4>Logging out...</h4>
-        <p>Please wait while we securely log you out.</p>
+@if (User.Identity?.IsAuthenticated ?? false)
+{
+
+    <div class="container mt-5 text-center">
+        <div class="alert alert-info">
+            <h4>Logging out...</h4>
+            <form method="post" asp-page="/Logout" style="display:inline;">
+                <button type="submit" class="btn btn-link">Logout</button>
+            </form>
+        </div>
     </div>
-</div>
+   
+}
+
+
 
 <script>
     // Automatic redirect after a brief delay
-    setTimeout(function() {
-        window.location.href = '/';
-    }, 1000);
+   
 </script>

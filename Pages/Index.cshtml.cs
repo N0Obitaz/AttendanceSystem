@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using AttendanceSystem.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace AttendanceSystem.Pages
 {
@@ -12,7 +14,7 @@ namespace AttendanceSystem.Pages
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
 
         [BindProperty]
-        public string? Username { get; set; }
+        public string? CurrentUser { get; set; }
 
         [BindProperty]
         public string? Password { get; set; }
@@ -26,41 +28,52 @@ namespace AttendanceSystem.Pages
         [HttpPost]
         public async Task<IActionResult> OnPostAsync()
         {
-            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            if (string.IsNullOrEmpty(CurrentUser) || string.IsNullOrEmpty(Password))
             {
                 ModelState.AddModelError(string.Empty, "Username and Password are required.");
                 return Page();
             }
 
-            // First check if it's an admin
+            // Check for admin
             var admin = await _context.Admin
-                .FirstOrDefaultAsync(a => a.Username.ToLower() == Username.ToLower() && a.Password == Password);
+                .FirstOrDefaultAsync(a => a.Username.ToLower() == CurrentUser.ToLower() && a.Password == Password);
 
             if (admin != null)
             {
-                // Admin login successful
-                HttpContext.Session.SetString("IsLoggedIn", "true");
-                HttpContext.Session.SetString("Username", Username);
-                HttpContext.Session.SetString("Role", "Admin");
+                await SignInUser(admin.Username, "Admin");
                 return RedirectToPage("/Students/Index");
             }
 
-            // If not admin, check if it's a student
+            //  Check for student
+            string user = new string(CurrentUser.Where(c => c != '-').ToArray());
             var student = await _context.Student
-                .FirstOrDefaultAsync(s => s.Username.ToLower() == Username.ToLower() && s.Password == Password);
+                .FirstOrDefaultAsync(s => s.StudentId.ToString() == user && s.Password == Password);
 
             if (student != null)
             {
-                // Student login successful
-                HttpContext.Session.SetString("IsLoggedIn", "true");
-                HttpContext.Session.SetString("Username", Username);
-                HttpContext.Session.SetString("Role", "Student");
+                await SignInUser(student.StudentId.ToString(), "Student");
                 return RedirectToPage("/ScanQR/ScanQR");
             }
 
-            // If neither admin nor student found
+            //  Invalid login
             ModelState.AddModelError(string.Empty, "Invalid username or password.");
             return Page();
+        }
+
+        private async Task SignInUser(string username, string role)
+        {
+            // Create user claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, role)
+            };
+
+            var identity = new ClaimsIdentity(claims, "CustomSession");
+            var principal = new ClaimsPrincipal(identity);
+
+            // Sign in with cookie authentication
+            await HttpContext.SignInAsync("CustomSession", principal);
         }
     }
 }

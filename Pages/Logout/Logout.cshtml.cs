@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authentication;
 
 namespace AttendanceSystem.Pages
 {
     public class LogoutModel : PageModel
     {
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnPostAsync()
         {
-            // Clear all session data
-            HttpContext.Session.Remove("IsLoggedIn");
-            HttpContext.Session.Remove("Username");
+            // Sign out the user from the "CustomSession" cookie
+            await HttpContext.SignOutAsync("CustomSession");
 
-            // Optional: Clear the entire session
-            HttpContext.Session.Clear();
+            // Optional: clear any additional cookies if needed
+            // Response.Cookies.Delete(".AspNetCore.CustomSession");
 
-            return Page();
+            // Redirect to login page after logout
+            return RedirectToPage("/Index");
         }
     }
 }

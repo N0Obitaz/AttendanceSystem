@@ -6,12 +6,13 @@ using ZXing.Windows.Compatibility;
 using System.Drawing;
 using Newtonsoft.Json;
 using AttendanceSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace AttendanceSystem.Pages.ScanQR
 {
     [IgnoreAntiforgeryToken]
-    [CustomAuthorize]
+    [Authorize]
     public class ScanQRModel : PageModel
     {
         [BindProperty]
