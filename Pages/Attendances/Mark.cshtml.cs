@@ -44,8 +44,6 @@ namespace AttendanceSystem.Pages.Attendances
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-
-                
                     // 1️ Create Attendance Record
                     var attendance = new Attendance
                     {
