@@ -29,9 +29,9 @@ builder.Services.AddTransient<EmailService>();
 builder.Services.AddAuthentication("CustomSession")
     .AddCookie("CustomSession", options =>
     {
-        options.LoginPath = "/Index";           // Redirect when not logged in
-        options.LogoutPath = "/Logout/Logout";         // Optional logout route
-        options.AccessDeniedPath = "/AccessDenied";   // Optional "no access" route
+        options.LoginPath = "/Index";          
+        options.LogoutPath = "/Logout/Logout";        
+        options.AccessDeniedPath = "/AccessDenied";   
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         options.SlidingExpiration = true;
     });
