@@ -7,12 +7,24 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<div class="d-flex flex-column border border-3 border-primary rounded-3 p-3 w-50">
 <form method="post" enctype="multipart/form-data">
-    <input type="file" asp-for="InputFile" />
-    <img src="~/images/.png" alt="QR Code" />
-    <button type="submit" asp-page-handler="Scan">Upload</button>
-</form>
 
+        <div class="mb-3"><label class="form-label">Upload QR Code Image</label>
+            
+            <div class="mb-3"><input type="file" asp-for="InputFile" /></div>
+        </div>
+            
+        <div class="mb-3"> <img src="~/images/.png" alt="QR Code" /></div>
+        <div class="mb-3"> <button type="submit" asp-page-handler="Scan">Upload</button></div>
+			
+       
+       
+       
+  
+   
+</form>
+</div>
 @if (@Model.OutputText != null)
 {
     <hr />
@@ -40,8 +52,12 @@
     <p><strong>Accuracy:</strong> <span id="acc">—</span> meters</p>
 </div>
 
-<p id="locationResult" class="alert alert-success mt-3"></p>
-    <p id="locationSuccess" class="alert alert-warning mt-3"></p>
+    <div id="locationDiv" class="d-flex flex-column align-items-center p-3 d-none">
+        <p id="locationResult" class="alert alert-success mt-3 w-50 text-center">Location Result</p>
+        <p id="locationSuccess" class="alert alert-warning mt-3 w-50 text-center">Location Success</p>
+    </div>  
+
+
 
     <button id="cancelBtn" class="btn btn-danger" style="display: none;">Cancel</button>
 
@@ -49,17 +65,23 @@
 
 @section Scripts {
     <script src="~/js/loglocation.js"></script>
+    <script>
+                  document.getElementById("btnLocation").addEventListener("click", async () => {
+                var locationDisplay = document.getElementById("locationDiv");
+                locationDisplay.classList.remove("d-none");
+            });
+    </script>
 }
 
 
 
         
-@if(TempData["isValid"] != null)
+@if(TempData["Message"] != null)
 {
 
 
         <div class="alert alert-success mt-lg-4">
-            <strong>Attendance Marked Successfully!</strong>
+            <strong>@TempData["Message"]</strong>
         </div>
         @* <h1>@TempData["isValid"].ToString()</h1> *@
         
