@@ -31,12 +31,14 @@
                 try {
                     result = await response.json();
 
-                    if (result.success) {
-                        var cancelBtn = document.getElementById("cancelBtn");
+                    if (result.success) { 
 
+
+                        var cancelBtn = document.getElementById("cancelBtn");
                         cancelBtn.style.display = "inline-block";
                         document.getElementById("locationResult").innerText = result.message;
                         document.getElementById("locationSuccess").innerText = "Please wait for your attendance to be marked"
+
                         setTimeout(() => window.location.reload(), 5000);
 
                         //go to a different page after 5 seconds
@@ -82,3 +84,8 @@
  });
 
 
+document.getElementById("btnLocation").addEventListener("click", async () => {
+    var locationDisplay = document.getElementById("locationDiv");
+    locationDisplay.classList.remove("d-none");
+
+});
