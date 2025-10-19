@@ -41,5 +41,30 @@ namespace AttendanceSystem.Pages.Students
             }
             return Page();
         }
+
+        public async Task<IActionResult> OnPostAsync(int id)
+        {
+            var student = await _context.Student
+                .Include(s => s.Attendances)
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var dateToday = student.Attendances
+                .FirstOrDefault(a => a.Date.Date == DateTime.UtcNow.Date);
+
+
+            if (dateToday != null)
+            {
+                student.Attendances.Remove(dateToday);
+
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            return RedirectToPage("./Index"); 
+        }
     }
 }

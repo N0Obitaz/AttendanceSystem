@@ -86,7 +86,21 @@
                                                 <span class="badge bg-danger">Absent</span>
                                             }
                                         </td>
+                                        <td>
+                                            <form method="post" asp-for="@Model.Student.StudentId">
+                                                
+                                                <a asp-route-id="@Model.Student.StudentId" class="btn btn-danger">
+
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </button>
+
+                                                </a>
+                                 
+                                            </form >
+                                        </td>
                                     </tr>
+                                    
                                 }
                             </tbody>
                         </table>
@@ -105,6 +119,7 @@
                 <a asp-page="./Index" class="btn btn-secondary ms-2">
                     ← Back to List
                 </a>
+              
             </div>
         </div>
     </div>
