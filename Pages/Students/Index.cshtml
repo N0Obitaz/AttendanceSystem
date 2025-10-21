@@ -44,10 +44,13 @@
                    
                     <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                     <td>
-                        <span class="text-dark">
-                            @item.Attendances.Count(a => a.Status == "Present" || a.Status =="Late") /
-                            @item.Attendances.Count()
-                        </span>
+                        <a asp-page="../AttendanceMatrix/Matrices" asp-route-id = "@item.StudentId">
+                            <span class="text-dark">
+                                @item.Attendances.Count(a => a.Status == "Present" || a.Status == "Late") /
+                                @item.Attendances.Count()
+                            </span>
+                        </a>
+                       
                     </td>
                     <td>
                         @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today))

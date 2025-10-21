@@ -1,0 +1,31 @@
+﻿@page
+@model AttendanceSystem.Pages.AttendanceMatrix.MatricesModel
+@using ChartJSCore.Helpers
+@using NuGet.Protocol
+<div class="d-flex flex-column align-items-center">
+
+    <div><canvas id="lineChart"></canvas></div>
+    <div class="w-25 h-25 justify-content-center m-0"><canvas id="doughnutChart"></canvas></div>
+</div>
+
+
+
+@{
+    ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)ViewData["chart"];
+    ChartJSCore.Models.Chart doughnutChart = (ChartJSCore.Models.Chart)ViewData["doughnutChart"];
+}
+
+@section Scripts {
+    <script src="~/lib/Chart.js/dist/Chart.js"></script>
+    <script>
+
+        /*
+        @Html.Raw(chart.CreateChartCode("lineChart"));
+
+        */
+        @Html.Raw(doughnutChart.CreateChartCode("doughnutChart"))
+
+
+
+    </script>
+}
