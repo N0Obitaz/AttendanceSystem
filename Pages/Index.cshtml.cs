@@ -41,7 +41,7 @@ namespace AttendanceSystem.Pages
             if (admin != null)
             {
                 await SignInUser(admin.Username, "Admin");
-                return RedirectToPage("/student-view/dashboard");
+                return RedirectToPage("/student-view/Home/dashboard");
             }
 
             //  Check for student
