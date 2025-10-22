@@ -11,17 +11,18 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    align-content: center;
 }
 
-.container {
+.login {
     display: flex;
     justify-content: center;
     flex-direction: row-reverse;
     height: 70vh;
-    margin: 0 auto;
+    margin-left: -100px;
     max-width: 50vw;
     width: 90%;
-
+    border-radius: 3rem;
 }
 
 .left {
@@ -31,6 +32,7 @@ html {
     flex-direction: column;
     justify-content: center;
     padding: 30px;
+
 }
 
     .left h1 {
