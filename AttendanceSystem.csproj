@@ -37,11 +37,6 @@
 
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\images\" />
-	</ItemGroup>
-
-
-	<ItemGroup>
 	  <None Include="appsettings.Production.Json" />
 	</ItemGroup>
 </Project>
