@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AttendanceSystem.Pages.student_view.ViewAttendance
 {
-    public class ViewAttendacecshtmlModel : PageModel
+    public class ViewAttendanceModel : PageModel
     {
+
         public void OnGet()
         {
         }
