@@ -75,5 +75,6 @@ namespace AttendanceSystem.Pages
             // Sign in with cookie authentication
             await HttpContext.SignInAsync("CustomSession", principal);
         }
+        
     }
 }
