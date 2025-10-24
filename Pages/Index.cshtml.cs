@@ -25,6 +25,28 @@ namespace AttendanceSystem.Pages
             _context = context;
         }
 
+        public async Task<IActionResult> OnGetAsync()
+        {
+            // Check if user is logged
+            if(User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var claimRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+                if(claimRole == "Admin")
+                {
+                    return RedirectToPage("./Admin_view/Dashboard/Index");
+
+                }
+                else if (claimRole == "Student")
+                {
+                    return RedirectToPage("./student_view/Home/Index");
+                }
+            }
+
+
+            return Page();
+        }
+
         [HttpPost]
         public async Task<IActionResult> OnPostAsync()
         {
