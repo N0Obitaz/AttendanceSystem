@@ -41,8 +41,8 @@ builder.Services.AddAuthentication("CustomSession")
 // Add services to the container.
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeFolder("/Students");
-    options.Conventions.AuthorizeFolder("/ScanQR");
+    options.Conventions.AuthorizeFolder("/student-view");
+    options.Conventions.AuthorizeFolder("/Admin-view");
     options.Conventions.AuthorizeFolder("/TransactionLogs");
     options.Conventions.AllowAnonymousToPage("/Index");
 });

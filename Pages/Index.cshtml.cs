@@ -52,7 +52,7 @@ namespace AttendanceSystem.Pages
             if (student != null)
             {
                 await SignInUser(student.StudentId.ToString(), "Student");
-                return RedirectToPage("/ScanQR/ScanQR");
+                return RedirectToPage("./student-view/Home");
             }
 
             //  Invalid login
