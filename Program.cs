@@ -41,10 +41,16 @@ builder.Services.AddAuthentication("CustomSession")
 // Add services to the container.
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeFolder("/student-view");
-    options.Conventions.AuthorizeFolder("/Admin-view");
+    options.Conventions.AuthorizeFolder("/student_view", "StudentOnly");
+    options.Conventions.AuthorizeFolder("/Admin_view", "AdminOnly");
     options.Conventions.AuthorizeFolder("/TransactionLogs");
     options.Conventions.AllowAnonymousToPage("/Index");
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("StudentOnly", policy => policy.RequireRole("Student"));
 });
 
 builder.Services.AddDbContext<AttendanceSystemContext>(options =>   
@@ -68,7 +74,7 @@ app.UseRouting();
 // ADD THIS MIDDLEWARE - ORDER IS CRITICAL!
 app.UseSession();      // Session must come before Authentication
 
-
+    
 app.UseAuthentication(); // Add this line - it was missing
 app.UseAuthorization();  // This was already here
 
