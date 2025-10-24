@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace AttendanceSystem.Pages.AttendanceMatrix
+namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
 {
     public class MatricesModel : PageModel
     {
@@ -24,6 +24,11 @@ namespace AttendanceSystem.Pages.AttendanceMatrix
         }
         public async Task OnGetAsync(int? id)
         {
+
+            if (id == null)
+            {
+                id = 2300185;
+            }
             var student = await _context.Student
                 .Include(s => s.Attendances)
                 .FirstOrDefaultAsync(m => m.StudentId == id);
