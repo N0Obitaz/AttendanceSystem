@@ -17,11 +17,34 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
         public Chart? AttendanceChart { get; set; }
 
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
+        
+        public List<Chart> AttendanceChartList { get; set; } = new List<Chart>();
 
         public MatricesModel(AttendanceSystem.Data.AttendanceSystemContext context)
         {
             _context = context;
         }
+
+        //public async Chart ChartAsync(int? id)
+        //{
+
+        //    Chart chart = new Chart();
+
+        //    if (id == null)
+        //    {
+        //        return null;
+        //    }
+
+
+        //    var student = await _context.Student
+        //        .Include(s => s.Attendances)
+        //        .FirstOrDefaultAsync(m => m.StudentId == id);
+        //    if(student == null)
+        //    {
+        //        return chart;
+        //    }
+        //    return chart;
+        //}
         public async Task OnGetAsync(int? id)
         {
 
@@ -38,9 +61,9 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
 
 
 
-            Chart chart = new Chart();
+            Chart lineChart = new Chart();
 
-            chart.Type = Enums.ChartType.Line;
+            lineChart.Type = Enums.ChartType.Line;
 
             var data = new ChartJSCore.Models.Data();
 
@@ -66,9 +89,9 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
             data.Datasets = new List<Dataset>();
             data.Datasets.Add(dataset);
 
-            chart.Data = data;
+            lineChart.Data = data;
 
-            ViewData["chart"] = chart;
+            ViewData["chart"] = lineChart;
 
 
 
@@ -84,17 +107,81 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
             DoughnutDataset doughnutDataset = new DoughnutDataset()
             {
                 Label = "Attendance Breakdown",
-                Data = new List<double?> { student.Attendances.Count(a => a.Status == "Present"),
-                                           student.Attendances.Count(a => a.Status == "Absent"),
-                                           student.Attendances.Count(a => a.Status == "Late") },
-                BackgroundColor = new List<ChartColor> { ChartColor.FromRgba(75, 192, 192, 0.4) , ChartColor.FromRgba(255, 205, 86, 0.8) , ChartColor.FromRgba(255, 99, 132, 0.8) }
+                Data = new List<double?>
+    {
+        student.Attendances.Count(a => a.Status == "Present"),
+        student.Attendances.Count(a => a.Status == "Absent"),
+        student.Attendances.Count(a => a.Status == "Late")
+    },
+                BackgroundColor = new List<ChartColor>
+    {
+        ChartColor.FromRgba(0, 163, 108, 0.9),  
+        ChartColor.FromRgba(215, 0, 64, 0.8),   
+        ChartColor.FromRgba(255, 205, 86, 0.8)   
+    },
+                BorderColor = new List<ChartColor>
+    {
+        ChartColor.FromRgba(255, 255, 255, 1),
+        ChartColor.FromRgba(255, 255, 255, 1),
+        ChartColor.FromRgba(255, 255, 255, 1)
+    },
+                BorderWidth = new List<int> { 2, 2, 2 },
+                HoverOffset = 25
             };
+
             doughnutData.Datasets = new List<Dataset>();
             doughnutData.Datasets.Add(doughnutDataset);
 
             doughnutChart.Data = doughnutData;
 
             ViewData["doughnutChart"] = doughnutChart;
+
+         
+            AttendanceChartList.Add(doughnutChart);
+
+
+
+
+
+
+            Chart doughnutChart2 = new Chart();
+
+            doughnutChart2.Type = Enums.ChartType.Doughnut;
+
+            var doughnutData2 = new ChartJSCore.Models.Data();
+
+            doughnutData2.Labels = new List<string>() { "Present", "Absent"};
+
+            DoughnutDataset doughnutDataset2 = new DoughnutDataset()
+            {
+                Label = "Attendance Breakdown",
+                Data = new List<double?>
+    {
+        student.Attendances.Count(a => a.Status == "Present"),
+        student.Attendances.Count(a => a.Status == "Absent")
+    },
+                BackgroundColor = new List<ChartColor>
+    {
+        ChartColor.FromRgba(0, 163, 108, 0.9),
+        ChartColor.FromRgba(215, 0, 64, 0.8)
+    },
+                BorderColor = new List<ChartColor>
+    {
+        ChartColor.FromRgba(255, 255, 255, 1),
+        ChartColor.FromRgba(255, 255, 255, 1)
+    },
+                BorderWidth = new List<int> { 2, 2 },
+                HoverOffset = 25
+            };
+
+            doughnutData2.Datasets = new List<Dataset>();
+            doughnutData2.Datasets.Add(doughnutDataset2);
+
+            doughnutChart2.Data = doughnutData2;
+
+            AttendanceChartList.Add(doughnutChart2);
+
+
 
         }
     }
