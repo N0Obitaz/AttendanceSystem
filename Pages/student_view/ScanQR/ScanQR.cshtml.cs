@@ -1,16 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Serilog;
-using ZXing;
-using ZXing.Windows.Compatibility;
-using System.Drawing;
-using Newtonsoft.Json;
-using AttendanceSystem.Services;
-using Microsoft.AspNetCore.Authorization;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AttendanceSystem.Data;
 using AttendanceSystem.Models;
+using AttendanceSystem.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Serilog;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.PixelFormats;
+//using System.Drawing;
+using ZXing;
+using ZXing.ImageSharp;
+//using ZXing.Windows.Compatibility;
 
 namespace AttendanceSystem.Pages.ScanQR
 {
@@ -48,44 +54,11 @@ namespace AttendanceSystem.Pages.ScanQR
             Name = "Charles";
         }
 
-        // ======================
-        //  Handler: Decode QR
-        // ======================
-        public void OnPostScan()
-        {
-            OutputText = ScanQRCode(InputFile);
+        
 
-            try
-            {
-                var jsonData = JsonConvert.DeserializeObject<dynamic>(OutputText);
-                OutputEmail = jsonData?.Email;
-                LastName = jsonData?.LastName;
-                StudentNumber = jsonData?.StudentNumber;
-
-                // Save to TempData for later use in LogLocation
-                if (!string.IsNullOrEmpty(StudentNumber))
-                {
-                    TempData["StudentNumber"] = StudentNumber;
-                    TempData["IsValidQR"] = true;
-                    Log.Information("QR Scanned Successfully for StudentNumber: {StudentNumber}", StudentNumber);
-                }
-                else
-                {
-                    Log.Warning("QR data missing StudentNumber.");
-                }
-            }
-            catch (Exception ex)
-            {
-                OutputEmail = "Error parsing JSON: " + ex.Message;
-                LastName = OutputEmail;
-                StudentNumber = OutputEmail;
-                Log.Error(ex, "Error decoding QR content");
-            }
-        }
-
-        // ==========================
-        //  Handler: Log Location
-        // ==========================
+        //
+        //   Log Location
+        // 
         public async Task<IActionResult> OnPostLogLocation([FromBody] LocationData? data)
         {
             if (data == null)
@@ -220,8 +193,56 @@ namespace AttendanceSystem.Pages.ScanQR
                 throw;
             }
         }
+        // ======================
+        //  Handler: Decode QR
+        // ======================
+        public void  OnPostScan()
+        {
+            var sampleText = new
+            {
+                StudentNumber = "23-00185",
+                Email = "charlesbernard.balaguer.041504@gmail.com",
+                LastName = "Balaguer",
+                Date = DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd HH:mm:ss")
 
-     
+            };
+
+          
+
+
+
+            //OutputText = JsonConvert.SerializeObject(ScanQRCode(InputFile));
+            OutputText = ScanQRCode(InputFile); 
+
+            try
+            {
+                var jsonData = JsonConvert.DeserializeObject<dynamic>(OutputText);
+                OutputEmail = jsonData?.Email;
+                LastName = jsonData?.LastName;
+                StudentNumber = jsonData?.StudentNumber;
+                
+
+                // Save to TempData for later use in LogLocation
+                if (!string.IsNullOrEmpty(StudentNumber) && jsonData != null)
+                {
+                    TempData["StudentNumber"] = StudentNumber;
+                    TempData["IsValidQR"] = true;
+                    Log.Information("QR Scanned Successfully for StudentNumber: {StudentNumber}", StudentNumber);
+                }
+                else
+                {
+                    Log.Warning("QR data missing StudentNumber.");
+                }
+            }
+            catch (Exception ex)
+            {
+                OutputEmail = "Error parsing JSON: " + ex.Message;
+                LastName = OutputEmail;
+                StudentNumber = OutputEmail;
+                Log.Error(ex, "Error decoding QR content");
+            }
+        }
+
         private string ScanQRCode(IFormFile? file)
         {
             if (file == null || file.Length == 0)
@@ -229,23 +250,57 @@ namespace AttendanceSystem.Pages.ScanQR
 
             try
             {
-                using var stream = file.OpenReadStream();
-                using var bitmap = new Bitmap(stream);
+                //using var stream = file.OpenReadStream();
+                //using var bitmap = new Bitmap(stream);
+
+                //var reader = new BarcodeReaderGeneric();
+                //var result = reader.Decode(new BitmapLuminanceSource(bitmap));
+
+                //if (result != null)
+                //{
+                //    IsValidQR = true;
+                //    return result.Text;
+                //}
+
+                using var image = Image.Load<Rgba32>(file.OpenReadStream());
+
+
+                // Copy all pixel data into a byte array
+                byte[] pixelBytes = new byte[image.Width * image.Height * Unsafe.SizeOf<Rgba32>()];
+                image.CopyPixelDataTo(pixelBytes);
+
+
+                var luminance = new RGBLuminanceSource(
+                    pixelBytes, 
+                    image.Width, 
+                    image.Height, 
+                    RGBLuminanceSource.BitmapFormat.RGB32
+                    );
+
+
+
+
+               
 
                 var reader = new BarcodeReaderGeneric();
-                var result = reader.Decode(new BitmapLuminanceSource(bitmap));
+                var result = reader.Decode(luminance);
 
-                if (result != null)
+                if (result.Text != null)
                 {
                     IsValidQR = true;
-                    return result.Text;
+                    var decodedText = result.Text;
+                    Log.Information("Decoded Text" + decodedText);
+
+                    TempData["resultText"] = decodedText;
+                    return decodedText;
                 }
 
+                TempData["resultText"] = "No QR Code Detected";
                 return "No QR Code Detected";
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error decoding QR code");
+                Log.Error("Error decoding QR code" + ex.Message);
                 return "Error Decoding QR Code: " + ex.Message;
             }
         }
