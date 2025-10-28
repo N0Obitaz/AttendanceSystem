@@ -51,16 +51,31 @@
 
     }
 
-    <div class="container flex-grow-1">
-        <main role="main" class="pb-3 m-4">
+    <div class="container flex-grow-1 p-1">
+        <main role="main" class="pb-3 m-4 d-flex flex-column ">
+
+            <div class="card shadow-sm p-2 mt-1 align-items-end text-end h-25">
+                <div class="card-body border border-0 w-50 font-monospace">
+                  
+                    <p class="text-muted">Date Today: <span id="clock" class="fw-bold"></span></>
+                </div>
+            </div>
 
 
-                @RenderBody()
+        @RenderBody()
+           
+            
           
          
         </main>
     </div>
-   
+
+    <style>
+        .flex-container {
+            display: flex;
+            flex-direction: column-reverse; /* Reverses order visually */
+        }
+    </style>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
