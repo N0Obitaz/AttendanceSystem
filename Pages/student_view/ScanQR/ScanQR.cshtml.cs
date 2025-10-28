@@ -45,16 +45,7 @@ namespace AttendanceSystem.Pages.ScanQR
         [BindProperty]
         public bool IsLocated { get; set; } = false;
 
-        public bool IsValidQR { get; set; } = false;
-
-
-        public void OnGet()
-        {
-
-            Name = "Charles";
-        }
-
-        
+  
 
         //
         //   Log Location
@@ -155,6 +146,8 @@ namespace AttendanceSystem.Pages.ScanQR
             if (alreadyMarked)
             {
                 Log.Warning("Attendance already marked for Student ID {StudentId}", id);
+
+                TempData["alreadyMarked"] = "true";
                 throw new Exception("Attendance already marked for today.");
             }
             try
@@ -193,25 +186,14 @@ namespace AttendanceSystem.Pages.ScanQR
                 throw;
             }
         }
-        // ======================
+        //
         //  Handler: Decode QR
-        // ======================
+        // 
         public void  OnPostScan()
         {
-            var sampleText = new
-            {
-                StudentNumber = "23-00185",
-                Email = "charlesbernard.balaguer.041504@gmail.com",
-                LastName = "Balaguer",
-                Date = DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd HH:mm:ss")
-
-            };
+            
 
           
-
-
-
-            //OutputText = JsonConvert.SerializeObject(ScanQRCode(InputFile));
             OutputText = ScanQRCode(InputFile); 
 
             try
@@ -236,9 +218,8 @@ namespace AttendanceSystem.Pages.ScanQR
             }
             catch (Exception ex)
             {
-                OutputEmail = "Error parsing JSON: " + ex.Message;
-                LastName = OutputEmail;
-                StudentNumber = OutputEmail;
+                OutputEmail = "Error parsing JSON:eeess " + ex.Message;
+             
                 Log.Error(ex, "Error decoding QR content");
             }
         }
@@ -287,7 +268,7 @@ namespace AttendanceSystem.Pages.ScanQR
 
                 if (result.Text != null)
                 {
-                    IsValidQR = true;
+            
                     var decodedText = result.Text;
                     Log.Information("Decoded Text" + decodedText);
 

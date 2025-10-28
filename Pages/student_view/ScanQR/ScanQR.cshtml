@@ -7,6 +7,8 @@
 
 <h2>@ViewData["Title"]</h2>
 
+
+<!-- Upload QR Section -->
 <div class="d-flex flex-column border border-3 border-primary rounded-3 p-3 w-50">
 <form method="post" enctype="multipart/form-data">
 
@@ -18,17 +20,12 @@
         <div class="mb-3"> <img src="~/images/.png" alt="QR Code" /></div>
         <div class="mb-3"> <button type="submit" asp-page-handler="Scan">Upload</button></div>
 			
-       
-       
-       
-  
-   
 </form>
 </div>
 
     
 
-@if (@Model.OutputText != null)
+@if (@Model.OutputText != null && (@Model.OutputEmail != null && @Model.LastName != null && Model.StudentNumber != null))
 {
     <hr />
 
@@ -53,12 +50,24 @@
     <p><strong>Latitude:</strong> <span id="lat">—</span></p>
     <p><strong>Longitude:</strong> <span id="lon">—</span></p>
     <p><strong>Accuracy:</strong> <span id="acc">—</span> meters</p>
-</div>
+    </div>
 
-    <div id="locationDiv" class="d-flex flex-column align-items-center p-3 d-none">
-        <p id="locationResult" class="alert alert-success mt-3 w-50 text-center">Location Result</p>
-        <p id="locationSuccess" class="alert alert-warning mt-3 w-50 text-center">Location Success</p>
-    </div>  
+
+    if(TempData["alreadyMarked"] == null || TempData["alreadyMarked"].ToString() != "true")
+    {
+        <div id="locationDiv" class="d-flex flex-column align-items-cent er p-3 d-none">
+            <p id="locationResult" class="alert alert-danger mt-3 w-50 text-center">Attendance Already Marked. Check Again Tomorrow</p>
+            
+        </div>
+    } else
+    {
+        <div id="locationDiv" class="d-flex flex-column align-items-center p-3 d-none">
+            <p id="locationResult" class="alert alert-success mt-3 w-50 text-center">Checking Attendance. Please Wait</p>
+            <p id="locationSuccess" class="alert alert-warning mt-3 w-50 text-center">Location Success</p>
+         
+        </div>
+    }
+
 
 
 
@@ -66,32 +75,30 @@
 
 
 
-@section Scripts {
-    <script src="~/js/loglocation.js"></script>
-    <script>
-                  document.getElementById("btnLocation").addEventListener("click", async () => {
-                var locationDisplay = document.getElementById("locationDiv");
-                locationDisplay.classList.remove("d-none");
-            });
-    </script>
-}
+    @section Scripts {
+        <script src="~/js/loglocation.js"></script>
+        <script>
+                      document.getElementById("btnLocation").addEventListener("click", async () => {
+                    var locationDisplay = document.getElementById("locationDiv");
+                    locationDisplay.classList.remove("d-none");
+                });
+        </script>
+    }
 
 
 
         
-@if(TempData["Message"] != null)
-{
+    @if(TempData["Message"] != null)
+    {
 
 
-        <div class="alert alert-success mt-lg-4">
-            <strong>@TempData["Message"]</strong>
-        </div>
-        @* <h1>@TempData["isValid"].ToString()</h1> *@
+            <div class="alert alert-success mt-lg-4">
+                <strong>@TempData["Message"]</strong>
+            </div>
+            @* <h1>@TempData["isValid"].ToString()</h1> *@
         
-        
-    
 
-}
+    }
 
 
 }
