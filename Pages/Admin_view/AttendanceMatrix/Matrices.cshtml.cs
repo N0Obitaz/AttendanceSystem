@@ -19,6 +19,8 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
         
         public List<Chart> AttendanceChartList { get; set; } = new List<Chart>();
+            
+        public string CenterValue { get; set; }
 
         public MatricesModel(AttendanceSystem.Data.AttendanceSystemContext context)
         {
@@ -134,9 +136,11 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
 
             doughnutChart.Data = doughnutData;
 
-            ViewData["doughnutChart"] = doughnutChart;
+            int total = student.Attendances.Count();
+            int present = student.Attendances.Count(a => a.Status == "Present");
+            var centerValue = total > 0 ? $"{(present * 100 / total)}%" : "0%";
 
-         
+
             AttendanceChartList.Add(doughnutChart);
 
 
@@ -150,20 +154,20 @@ namespace AttendanceSystem.Pages.Admin_view.AttendanceMatrix
 
             var doughnutData2 = new ChartJSCore.Models.Data();
 
-            doughnutData2.Labels = new List<string>() { "Present", "Absent"};
+            doughnutData2.Labels = new List<string>() { "Present" };
 
             DoughnutDataset doughnutDataset2 = new DoughnutDataset()
             {
                 Label = "Attendance Breakdown",
                 Data = new List<double?>
     {
-        student.Attendances.Count(a => a.Status == "Present"),
+        student.Attendances.Count(a => a.Status == "Present" || a.Status == "Late"),
         student.Attendances.Count(a => a.Status == "Absent")
     },
                 BackgroundColor = new List<ChartColor>
     {
         ChartColor.FromRgba(0, 163, 108, 0.9),
-        ChartColor.FromRgba(215, 0, 64, 0.8)
+        ChartColor.FromRgba(216,216,216, 0.8)
     },
                 BorderColor = new List<ChartColor>
     {

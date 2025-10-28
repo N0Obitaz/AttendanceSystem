@@ -4,6 +4,14 @@
 @using NuGet.Protocol
 
 
+@{
+    ViewData["Title"] = "Student Attendances";
+}
+
+<h1 class=text-success>@ViewData["Title"]</h1>
+
+
+
 <div class="d-flex flex-column align-items-center">
     <div class="d-flex flex-row align-items-center mb-4">
 
@@ -16,6 +24,12 @@
             {
 
                 <h1>@chartNum</h1>
+
+                var presentCount = item.Data.Datasets[0].Data[0]; 
+                var totalCount = item.Data.Datasets[0].Data.Sum(d => d ?? 0);
+                var centerValue = totalCount > 0 ? $"{(presentCount * 100 / totalCount):0}%" : "0%";
+
+
                 var chartId = $"chart_{item.Type}{chartNum}";
                 <div class="chart-container border border-1 m-0 p-2">
                     <canvas id="@chartId"></canvas>
@@ -25,7 +39,21 @@
 
                 <script>
                     @Html.Raw(chart.CreateChartCode(chartId))
-
+                                Chart.register({
+                        id: 'centerText',
+                        afterDraw(chart) {
+                            const { ctx, chartArea: { width, height } } = chart;
+                            ctx.save();
+                            ctx.font = 'bold 2.0em sans-serif';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillStyle = '#333';
+                            const text = '@centerValue';
+                            const textX = (width - ctx.measureText(text).width) / 2;
+                            const textY = height / 1.6;
+                            ctx.fillText(text, textX, textY);
+                            ctx.restore();
+                        }
+                    });
 
                 </script>
                 chartNum++;
