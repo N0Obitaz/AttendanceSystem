@@ -146,7 +146,7 @@ namespace AttendanceSystem.Pages.ScanQR
             if (alreadyMarked)
             {
                 Log.Warning("Attendance already marked for Student ID {StudentId}", id);
-
+                TempData["attendanceMessage"] = $"Attendance already marked for Student ID {id}";
                 TempData["alreadyMarked"] = "true";
                 throw new Exception("Attendance already marked for today.");
             }

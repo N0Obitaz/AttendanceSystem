@@ -53,20 +53,14 @@
     </div>
 
 
-    if(TempData["alreadyMarked"] == null || TempData["alreadyMarked"].ToString() != "true")
-    {
-        <div id="locationDiv" class="d-flex flex-column align-items-cent er p-3 d-none">
-            <p id="locationResult" class="alert alert-danger mt-3 w-50 text-center">Attendance Already Marked. Check Again Tomorrow</p>
-            
-        </div>
-    } else
-    {
+   
+   
         <div id="locationDiv" class="d-flex flex-column align-items-center p-3 d-none">
             <p id="locationResult" class="alert alert-success mt-3 w-50 text-center">Checking Attendance. Please Wait</p>
             <p id="locationSuccess" class="alert alert-warning mt-3 w-50 text-center">Location Success</p>
          
         </div>
-    }
+    
 
 
 

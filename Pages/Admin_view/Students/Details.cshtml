@@ -75,7 +75,7 @@
                                 @foreach (var record in Model.Student.Attendances.OrderByDescending(a => a.Date))
                                 {
                                     <tr>
-                                        <td>@record.Date.ToString("MMMM dd, yyyy")</td>
+                                        <td>@record.Date.ToString("MMMM dd, yyyy, hh:mm:ss")</td>
                                         <td>
                                             @if (record.Status == "Present")
                                             {

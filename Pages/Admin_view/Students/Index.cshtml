@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Index";
+   
 }
 
 
@@ -53,6 +54,8 @@
                        
                     </td>
                     <td>
+
+
                         @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today))
                         {
                             @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Present"))
