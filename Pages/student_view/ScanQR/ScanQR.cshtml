@@ -63,20 +63,17 @@
     
 
 
+        <form method="post">
 
+        <button id="cancelBtn" class="btn btn-danger d-none"  asp-page-hander="Cancel">Cancel</button>
+        </form>
 
-    <button id="cancelBtn" class="btn btn-danger" style="display: none;">Cancel</button>
 
 
 
     @section Scripts {
         <script src="~/js/loglocation.js"></script>
-        <script>
-                      document.getElementById("btnLocation").addEventListener("click", async () => {
-                    var locationDisplay = document.getElementById("locationDiv");
-                    locationDisplay.classList.remove("d-none");
-                });
-        </script>
+        <script src="~/js/modifybutton.js"></script>
     }
 
 

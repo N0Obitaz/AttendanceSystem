@@ -47,9 +47,9 @@ namespace AttendanceSystem.Pages.ScanQR
 
   
 
-        //
+        
         //   Log Location
-        // 
+        
         public async Task<IActionResult> OnPostLogLocation([FromBody] LocationData? data)
         {
             if (data == null)
@@ -95,6 +95,8 @@ namespace AttendanceSystem.Pages.ScanQR
                 return new JsonResult(new { success = false, message = "Student number not found." });
             }
 
+         
+
             // Clean & mark attendance
             string cleanStudentNumber = new string(studentNumber.Where(s => s != '-').ToArray());
             if (int.TryParse(cleanStudentNumber, out int studentId))
@@ -121,6 +123,13 @@ namespace AttendanceSystem.Pages.ScanQR
             }
 
             return new JsonResult(new { success = false, message = "Invalid student number format." });
+        }
+
+
+        public IActionResult OnPostCancel()
+        {
+            // Code Block for cancelling the operation
+            return RedirectToPage("../Home");
         }
 
         //  Mark Attendance 
@@ -231,17 +240,7 @@ namespace AttendanceSystem.Pages.ScanQR
 
             try
             {
-                //using var stream = file.OpenReadStream();
-                //using var bitmap = new Bitmap(stream);
-
-                //var reader = new BarcodeReaderGeneric();
-                //var result = reader.Decode(new BitmapLuminanceSource(bitmap));
-
-                //if (result != null)
-                //{
-                //    IsValidQR = true;
-                //    return result.Text;
-                //}
+               
 
                 using var image = Image.Load<Rgba32>(file.OpenReadStream());
 
