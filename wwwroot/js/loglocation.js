@@ -2,8 +2,10 @@
             if (!navigator.geolocation) {
                 alert("Geolocation not supported.");
                 return;
-            }
+     }
 
+    
+   
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 console.log("Position:", pos.coords);
 
@@ -21,6 +23,8 @@
                     accuracy: pos.coords.accuracy
                 };
 
+                
+
                 const response = await fetch("?handler=LogLocation", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -34,8 +38,7 @@
                     if (result.success) { 
 
 
-                        var cancelBtn = document.getElementById("cancelBtn");
-                        cancelBtn.style.display = "inline-block";
+                        
                         document.getElementById("locationResult").innerText = result.message;
                         document.getElementById("locationSuccess").innerText = "Please wait for your attendance to be marked"
 
@@ -87,5 +90,7 @@
 document.getElementById("btnLocation").addEventListener("click", async () => {
     var locationDisplay = document.getElementById("locationDiv");
     locationDisplay.classList.remove("d-none");
+
+    
 
 });
