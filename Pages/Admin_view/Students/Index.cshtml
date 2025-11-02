@@ -33,7 +33,8 @@
         <tbody>
             @foreach (var item in Model.Student)
             {
-                <tr>
+                
+                <tr >
                     <td>
                         <a asp-page="./Details" asp-route-id="@item.StudentId">
                   @Html.DisplayFor(modelItem => item.LastName)
@@ -92,7 +93,15 @@
             }
         </tbody>
     </table>
+
+    <div class="pagination">
+        <button onclick="prevPage()">Prev</button>
+        <span id="page-info"></span>
+        <button onclick="nextPage()">Prev</button>
+    </div>
 </div>
+
+
 
 
 @section Scripts {
