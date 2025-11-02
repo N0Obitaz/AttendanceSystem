@@ -200,9 +200,6 @@ namespace AttendanceSystem.Pages.ScanQR
         // 
         public void  OnPostScan()
         {
-            
-
-          
             OutputText = ScanQRCode(InputFile); 
 
             try
@@ -222,6 +219,7 @@ namespace AttendanceSystem.Pages.ScanQR
                 }
                 else
                 {
+                   OutputText = "Invalid QR Code Data";
                     Log.Warning("QR data missing StudentNumber.");
                 }
             }
