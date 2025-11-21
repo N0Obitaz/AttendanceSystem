@@ -2,9 +2,24 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
 
-# Copy everything and build the project
+# Install Node.js + npm (required for Tailwind or any npm run steps)
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Copy everything
 COPY . .
+
+# Install npm packages (package.json must exist)
+RUN npm install
+
+# Build your CSS (this is the command failing before)
+RUN npm run css:build
+
+# Publish the .NET app
 RUN dotnet publish -c Release -o /app
+
 
 # Final runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
