@@ -35,8 +35,12 @@
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.13" />
 	</ItemGroup>
 
-
+   
 	<ItemGroup>
 	  <None Include="appsettings.Production.Json" />
 	</ItemGroup>
+
+	<Target Name="Tailwind" BeforeTargets="Build">
+		<Exec Command="npm run css:build" />
+	</Target>
 </Project>

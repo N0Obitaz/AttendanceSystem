@@ -1,0 +1,28 @@
+{
+  "name": "attendancesystem",
+  "version": "1.0.0",
+  "description": "This attendance system uses QR code scanning in order to log the attendance.",
+  "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "css:build": "npx tailwindcss -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --minify",
+        "css:watch": "npx tailwindcss -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --watch"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N0Obitaz/AttendanceSystem.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/N0Obitaz/AttendanceSystem/issues"
+  },
+  "homepage": "https://github.com/N0Obitaz/AttendanceSystem#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18"
+  }
+}

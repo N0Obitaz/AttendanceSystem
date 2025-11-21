@@ -1,0 +1,52 @@
+﻿@page
+@model AttendanceSystem.Pages.testpageModel
+
+
+<div class="p-8 max-w-lg mx-auto bg-white rounded-xl shadow-2xl space-y-6 border-t-4 border-indigo-500 transition-all duration-300">
+
+    <h1 class="text-3xl font-extrabold text-indigo-700">
+        ✅ Tailwind Test Successful!
+    </h1>
+
+    <p class="text-gray-600">
+        If this card is centered, has a drop shadow, rounded corners, and a blue top border, your basic Tailwind setup is working.
+    </p>
+
+    <!-- Feature Test Section -->
+    <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-gray-800 border-b pb-2">Utility Class Verification</h2>
+
+        <!-- Test 1: Color and Padding -->
+        <div class="bg-green-100 p-4 rounded-lg text-green-800 font-medium">
+            This box should be light green with dark green text.
+        </div>
+
+        <!-- Test 2: Hover and Interaction -->
+        <button class="w-full py-3 px-4 bg-indigo-500 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md">
+            Test Hover Effect (Button color should darken on mouse over)
+        </button>
+
+        <!-- Test 3: Responsiveness -->
+        <div class="p-4 rounded-lg border-2 border-gray-300">
+            <p class="font-semibold text-center text-red-500 sm:text-blue-500 md:text-green-500">
+                Test Responsive Color
+            </p>
+            <p class="text-sm text-gray-500 text-center">
+                (Resize your browser window! The text color should be RED on small screens, BLUE on medium screens, and GREEN on large screens.)
+            </p>
+        </div>
+
+        <!-- Test 4: Flexbox Layout -->
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+            <div class="flex-1 p-2 bg-yellow-100 text-yellow-800 rounded-lg text-center">Box 1</div>
+            <div class="flex-1 p-2 bg-yellow-100 text-yellow-800 rounded-lg text-center">Box 2</div>
+        </div>
+        <p class="text-xs text-gray-500 text-center">
+            These boxes should stack vertically on small screens and sit side-by-side on larger screens.
+        </p>
+    </div>
+
+</div>
+
+@{
+}
