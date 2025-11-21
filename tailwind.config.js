@@ -1,11 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        './Pages/**/*.cshtml', // For Razor Pages
-        './Views/**/*.cshtml', // For MVC    
+        './Pages/**/*.cshtml',
+        
     ],
   theme: {
-    extend: {},
+      extend: {
+          backgroundImage: {
+              'custom-teal-gradient': 'linear-gradient(to right, #85ad74, #005540)',
+          }
+      },
   },
   plugins: [],
 }

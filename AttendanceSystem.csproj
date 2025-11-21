@@ -40,4 +40,7 @@
 	  <None Include="appsettings.Production.Json" />
 	</ItemGroup>
 
+	<Target Name="Tailwind" BeforeTargets="Build">
+		<Exec Command="npm run css:watch" />
+	</Target>
 </Project>

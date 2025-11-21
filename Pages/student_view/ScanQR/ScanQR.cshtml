@@ -7,100 +7,119 @@
 
 <h2>@ViewData["Title"]</h2>
 
-
 <!-- Upload QR Section -->
-<div class="d-flex flex-column border border-3 border-primary rounded-3 p-3 w-50">
-<form method="post" enctype="multipart/form-data">
+<div class="container mx-auto p-6 max-w-xl font-sans bg-gray-50 min-h-screen">
 
-        <div class="mb-3"><label class="form-label">Upload QR Code Image</label>
-            
-            <div class="mb-3"><input type="file" asp-for="InputFile" /></div>
+    <div class="bg-white shadow-xl border-t-4 border-teal-600 rounded-none overflow-hidden">
+
+        <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Attendance System Portal</h2>
+            <p class="text-sm text-gray-500 mt-1">QR Scan & Geo-Verification</p>
         </div>
-            
-        <div class="mb-3"> <img src="~/images/.png" alt="QR Code" /></div>
-        <div class="mb-3"> <button type="submit" asp-page-handler="Scan">Upload</button></div>
-			
-</form>
+
+        <hr class="border-gray-200" />
+
+        <div class="p-6">
+            <h3 class="text-xl font-semibold mb-5 text-gray-700">Upload QR Code</h3>
+            <form method="post" enctype="multipart/form-data">
+
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-medium mb-3 text-sm">Upload QR Code Image</label>
+                    <div class="mb-3">
+                        <input type="file" asp-for="InputFile" class="block w-full text-sm text-gray-600
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-md file:border-none
+                            file:text-sm file:font-semibold
+                            file:bg-teal-500 file:text-white
+                            hover:file:bg-teal-600 cursor-pointer transition duration-200 shadow-md" />
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <img src="~/images/.png" alt="QR Code" class="h-10 w-10 object-cover border border-gray-300 p-1 rounded-sm shadow-inner" />
+                </div>
+
+                <div class="mb-4">
+                    <button type="submit" asp-page-handler="Scan"
+                            class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 px-8 rounded-sm text-sm tracking-wider transition duration-200 shadow-lg">
+                        UPLOAD
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <hr class="border-gray-200" />
+
+        <div class="p-6">
+            @if (@Model.OutputText != null && (@Model.OutputEmail != null && @Model.LastName != null && Model.StudentNumber != null))
+            {
+
+                <div class="bg-green-50 border-l-4 border-green-600 text-green-800 p-4 mb-6 rounded-sm" role="alert">
+                    <strong class="font-bold">SUCCESS!</strong>
+                    <span class="block sm:inline">QR Code scanned successfully.</span>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">QR Output</h3>
+                <div class="text-sm space-y-1 mb-6 border-b pb-4 border-gray-100">
+                    <p><strong>Email:</strong> <span class="text-teal-600 font-medium">@Model.OutputEmail</span></p>
+                    <p><strong>Last Name:</strong> @Model.LastName</p>
+                    <p><strong>Student Number:</strong> @Model.StudentNumber</p>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Check your Location</h3>
+
+                <button id="btnLocation"
+                        class="border border-teal-600 text-teal-600 hover:bg-teal-50 font-semibold py-2.5 px-8 rounded-sm text-sm transition duration-200 shadow-md">
+                    LOG MY LOCATION
+                </button>
+
+                <div id="locationDisplay" class="mt-4 hidden text-sm text-gray-700 p-3 bg-gray-100 rounded-sm border border-gray-300">
+                    <p class="mb-1"><strong>Latitude:</strong> <span id="lat">—</span></p>
+                    <p class="mb-1"><strong>Longitude:</strong> <span id="lon">—</span></p>
+                    <p class="mb-1"><strong>Accuracy:</strong> <span id="acc">—</span> meters</p>
+                </div>
+
+
+                <div id="locationDiv" class="flex flex-col items-center p-3 hidden">
+                    <p id="locationResult" class="bg-blue-50 border-l-4 border-blue-600 text-blue-800 px-4 py-3 rounded-sm mt-4 w-full text-center text-sm">Checking Attendance. Please Wait</p>
+                    <p id="locationSuccess" class="bg-yellow-50 border-l-4 border-yellow-600 text-yellow-800 px-4 py-3 rounded-sm mt-3 w-full text-center text-sm">Location Success</p>
+                </div>
+
+
+                <form method="post">
+                    <button id="cancelBtn" asp-page-handler="Cancel"
+                            class="w-full bg-red-600 border border-red-700 text-white hover:bg-red-700 font-bold py-2.5 px-8 rounded-sm text-sm transition duration-200 hidden mt-6 shadow-lg tracking-wider">
+                        CANCEL
+                    </button>
+                </form>
+
+
+                @if (TempData["Message"] != null)
+                {
+                    <div class="bg-green-50 border-l-4 border-green-600 text-green-800 p-4 mt-6 rounded-sm" role="alert">
+                        <strong class="font-bold">@TempData["Message"]</strong>
+                    </div>
+                }
+
+
+            }
+            else if (Model.OutputText != null)
+            {
+                <div class="bg-red-50 border-l-4 border-red-600 text-red-800 p-4" role="alert">
+                    <strong class="font-bold">ERROR!</strong>
+                    <span class="block sm:inline">QR Code is not valid.</span>
+
+                    <h3 class="text-base font-medium mt-2">
+                        <strong class="text-red-900">Try:</strong> Uploading a valid QR
+                    </h3>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
-    
-
-@if (@Model.OutputText != null && (@Model.OutputEmail != null && @Model.LastName != null && Model.StudentNumber != null))
-{
-    <hr />
-
-    <div class="alert alert-success mt-3">
-		<strong>Success!</strong> QR Code scanned successfully.
-        <h3>QR Output</h3>
-        <p><strong>Email:</strong> @Model.OutputEmail</p>
-        <p><strong>Last Name:</strong> @Model.LastName</p>
-        <p><strong>Student Number:</strong> @Model.StudentNumber</p>
-    </div>
-    
-
-    <hr />
-
-
-
-<!-- Location Section -->
-<h3>Check your Location</h3>
-<button id="btnLocation">Log My Location</button>
-
-<div id="locationDisplay" style="margin-top:10px; display: none">
-    <p><strong>Latitude:</strong> <span id="lat">—</span></p>
-    <p><strong>Longitude:</strong> <span id="lon">—</span></p>
-    <p><strong>Accuracy:</strong> <span id="acc">—</span> meters</p>
-    </div>
-
-
-   
-   
-        <div id="locationDiv" class="d-flex flex-column align-items-center p-3 d-none">
-            <p id="locationResult" class="alert alert-success mt-3 w-50 text-center">Checking Attendance. Please Wait</p>
-            <p id="locationSuccess" class="alert alert-warning mt-3 w-50 text-center">Location Success</p>
-         
-        </div>
-    
-
-
-        <form method="post">
-
-        <button id="cancelBtn" class="btn btn-danger d-none"  asp-page-hander="Cancel">Cancel</button>
-        </form>
-
-
-
-
-    @section Scripts {
-        <script src="~/js/loglocation.js"></script>
-        <script src="~/js/modifybutton.js"></script>
-    }
-
-
-
-        
-    @if(TempData["Message"] != null)
-    {
-
-
-            <div class="alert alert-success mt-lg-4">
-                <strong>@TempData["Message"]</strong>
-            </div>
-            @* <h1>@TempData["isValid"].ToString()</h1> *@
-        
-
-    }
-
-
-} else if(Model.OutputText != null)
-{
-    <div class="alert alert-danger mt-3">
-        <strong></strong> QR Code is not valid.
-        
-        <h3><strong>Try:</strong> Uploading a valid QR</h3>
-       
-    </div>
+@section Scripts {
+    <script src="~/js/loglocation.js"></script>
+    <script src="~/js/modifybutton.js"></script>
 }
-
-
-
