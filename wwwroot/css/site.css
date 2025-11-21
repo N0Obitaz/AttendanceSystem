@@ -22,7 +22,7 @@ body {
     margin: 20px 30px 0 280px;
     border-radius: 20px;
     max-height: 200vh;
-
+    background: linear-gradient(to right, #85ad74, #005540);
 }
 
 .sidebar {

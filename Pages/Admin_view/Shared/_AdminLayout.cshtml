@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="~/css/output.css" />
     @* <link rel="stylesheet" href="~/AttendanceSystem.styles.css" asp-append-version="true" /> *@
 </head>
-<body>
     @if(ViewData["HideHeader"] == null || !(bool)ViewData["HideHeader"])
     {
         <header>
@@ -52,16 +51,22 @@
 
     }
 
-    <div class="container flex-grow-1 p-1">
-        <main role="main" class="pb-3 m-4 d-flex flex-column ">
+    <body class="bg-gray-50 min-h-screen">
 
-            <div class="card border border-0 shadow-sm mt-1 align-items-end text-end ">
-                <div class="card-body p-1  w-50 font-monospace">
-                  
-                    <p class="text-muted align-content-center m-auto ">Date Today: <span id="clock" class="fw-bold"></span></>
-                </div>
-                 
+        <!-- Main Content Wrapper: Pushed to the right by the sidebar width (w-64 = 16rem) -->
+        <div class="ml-64 p-8">
+
+            <!-- Content Container -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
+
+                <!-- Note: The main tag now controls the width and padding of the content inside the body -->
+                <main role="main" class="w-full mx-auto py-8 sm:py-10 max-w-5xl">
+                    <!-- This will display your specific page content -->
+                    @RenderBody()
+                </main>
             </div>
+
+        </div>
 
             @RenderBody()
       

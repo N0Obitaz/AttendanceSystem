@@ -5,7 +5,11 @@ module.exports = {
         
     ],
   theme: {
-    extend: {},
+      extend: {
+          backgroundImage: {
+              'custom-teal-gradient': 'linear-gradient(to right, #85ad74, #005540)',
+          }
+      },
   },
   plugins: [],
 }
