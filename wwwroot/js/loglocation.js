@@ -80,7 +80,7 @@ document.getElementById("btnLocation").addEventListener("click", async () => {
 
             } else {
                 document.getElementById("locationResult").innerText = result.message;
-                document.getElementById("locationSuccess").innerText = "You already Marked your attendance for today"
+                document.getElementById("locationSuccess").innerText = "Redirecting Back..."
 
                 setTimeout(() => window.location.reload(), 5000);
             }
