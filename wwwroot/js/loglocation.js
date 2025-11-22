@@ -1,96 +1,129 @@
-﻿ document.getElementById("btnLocation").addEventListener("click", async () => {
-            if (!navigator.geolocation) {
-                alert("Geolocation not supported.");
-                return;
-     }
+﻿const fileInput = document.getElementById('fileInput');
+const imagePreview = document.getElementById('imagePreview');
 
-    
-   
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                console.log("Position:", pos.coords);
+// Add an event listener for when a file is selected
+fileInput.addEventListener('change', function (event) {
+    const file = event.target.files[0]; // Get the first file selected
 
-                const lat = pos.coords.latitude.toFixed(6);
-                const lon = pos.coords.longitude.toFixed(6);
-                const acc = pos.coords.accuracy.toFixed(2);
+    if (file) {
+        // Initialize the FileReader API
+        const reader = new FileReader();
 
-                document.getElementById("lat").innerText = lat;
-                document.getElementById("lon").innerText = lon;
-                document.getElementById("acc").innerText = acc;
+        // Set up the function to run when the file has been read
+        reader.onload = function (e) {
+            // Set the image source to the data URL provided by the reader
+            imagePreview.src = e.target.result;
+        };
 
-                const data = {
-                    latitude: pos.coords.latitude,
-                    longitude: pos.coords.longitude,
-                    accuracy: pos.coords.accuracy
-                };
+        // Read the file content as a data URL (Base64 encoded string)
+        reader.readAsDataURL(file);
+    }
+});
 
-                
+document.getElementById("btnLocation").addEventListener("click", async () => {
+    const locationDisplay = document.getElementById("locationDiv");
+    locationDisplay.classList.remove("hidden"); // Tailwind visibility
 
-                const response = await fetch("?handler=LogLocation", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
-
-                let result;
-                try {
-                    result = await response.json();
-
-                    if (result.success) { 
+    const cancelBtn = document.getElementById("cancelBtn");
+    cancelBtn.classList.remove("hidden"); // Tailwind visibility
+});
 
 
-                        
-                        document.getElementById("locationResult").innerText = result.message;
-                        document.getElementById("locationSuccess").innerText = "Please wait for your attendance to be marked"
+document.getElementById("btnLocation").addEventListener("click", async () => {
+    if (!navigator.geolocation) {
+        alert("Geolocation not supported.");
+        return;
+    }
 
-                        setTimeout(() => window.location.reload(), 5000);
 
-                        //go to a different page after 5 seconds
-                     
 
-                    }
-                } catch (e) {
-                    console.error("Invalid JSON from server:", e);
-                    const text = await response.text();
-                    console.log("Raw response:", text);
-                    document.getElementById("locationResult").innerText = "Server returned invalid JSON.";
-                    return;
-                }
-      
-               
-               
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        console.log("Position:", pos.coords);
 
-            }, (err) => {
-                console.error("Geolocation error:", err);
-                // Proper error handling for PositionError
-                let errorMessage = "Error getting Location: ";
-                switch (err.code) {
-                    case err.PERMISSION_DENIED:
-                        errorMessage += "Location access denied by user. Please allow location permissions and try again.";
-                        break;
-                    case err.POSITION_UNAVAILABLE:
-                        errorMessage += "Location information unavailable. Check if GPS is enabled.";
-                        break;
-                    case err.TIMEOUT:
-                        errorMessage += "Location request timed out. Please try again.";
-                        break;
-                    default:
-                        errorMessage += "An unknown error occurred.";
-                        break;
-                }
-                alert(errorMessage);
-                document.getElementById("locationResult").innerText = errorMessage;
-            }, {
-                enableHighAccuracy: true,
-                timeout: 5000, // 10 seconds
-                maximumAge: 0 // Don't use cached position
-            });
- });
+        const lat = pos.coords.latitude.toFixed(6);
+        const lon = pos.coords.longitude.toFixed(6);
+        const acc = pos.coords.accuracy.toFixed(2);
+
+        document.getElementById("lat").innerText = lat;
+        document.getElementById("lon").innerText = lon;
+        document.getElementById("acc").innerText = acc;
+
+        const data = {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            accuracy: pos.coords.accuracy
+        };
+
+
+
+        const response = await fetch("?handler=LogLocation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        let result;
+
+
+        try {
+            result = await response.json();
+
+            if (result.success) {
+
+                document.getElementById("locationResult").innerText = result.message;
+                document.getElementById("locationSuccess").innerText = "Please wait for your attendance to be marked"
+
+                setTimeout(() => window.location.reload(), 5000);
+
+                //go to a different page after 5 seconds
+
+
+            } else {
+                document.getElementById("locationResult").innerText = result.message;
+                document.getElementById("locationSuccess").innerText = "You already Marked your attendance for today"
+
+                setTimeout(() => window.location.reload(), 5000);
+            }
+        } catch (e) {
+            console.error("Invalid JSON from server:", e);
+            const text = await response.text();
+            console.log("Raw response:", text);
+            document.getElementById("locationResult").innerText = "Server returned invalid JSON.";
+            return;
+        }
+
+
+
+
+    }, (err) => {
+        console.error("Geolocation error:", err);
+        // Proper error handling for PositionError
+        let errorMessage = "Error getting Location: ";
+        switch (err.code) {
+            case err.PERMISSION_DENIED:
+                errorMessage += "Location access denied by user. Please allow location permissions and try again.";
+                break;
+            case err.POSITION_UNAVAILABLE:
+                errorMessage += "Location information unavailable. Check if GPS is enabled.";
+                break;
+            case err.TIMEOUT:
+                errorMessage += "Location request timed out. Please try again.";
+                break;
+            default:
+                errorMessage += "An unknown error occurred.";
+                break;
+        }
+        alert(errorMessage);
+        document.getElementById("locationResult").innerText = errorMessage;
+    }, {
+        enableHighAccuracy: true,
+        timeout: 5000, // 10 seconds
+        maximumAge: 0 // Don't use cached position
+    });
+});
 
 
 document.getElementById("btnLocation").addEventListener("click", async () => {
     var locationDisplay = document.getElementById("locationDiv");
     locationDisplay.classList.remove("d-none");
-
-    
-
 });

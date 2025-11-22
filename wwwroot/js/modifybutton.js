@@ -1,7 +1,7 @@
 ﻿document.getElementById("btnLocation").addEventListener("click", async () => {
-    var locationDisplay = document.getElementById("locationDiv");
-    locationDisplay.classList.remove("d-none");
+    const locationDisplay = document.getElementById("locationDiv");
+    locationDisplay.classList.remove("hidden"); // Tailwind visibility
 
-    var cancelBtn = document.getElementById("cancelBtn");
-    cancelBtn.classList.remove("d-none")
+    const cancelBtn = document.getElementById("cancelBtn");
+    cancelBtn.classList.remove("hidden"); // Tailwind visibility
 });
