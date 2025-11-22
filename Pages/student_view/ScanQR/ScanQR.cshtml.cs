@@ -79,8 +79,6 @@ namespace AttendanceSystem.Pages.ScanQR
                 });
             }
 
-            Log.Information("Location Validated: {Message}", validation.Message);
-
             // Retrieve saved QR details
             var studentNumber = TempData["StudentNumber"] as string;
             bool isValidQR = TempData["IsValidQR"] != null && (bool)TempData["IsValidQR"];
@@ -117,7 +115,7 @@ namespace AttendanceSystem.Pages.ScanQR
                     return new JsonResult(new
                     {
                         success = false,
-                        message = "Error marking attendance. Please contact admin."
+                        message = $"Error marking attendance. Please contact admin. {ex.Message}"
                     });
                 }
             }
@@ -129,7 +127,7 @@ namespace AttendanceSystem.Pages.ScanQR
         public IActionResult OnPostCancel()
         {
             // Code Block for cancelling the operation
-            return RedirectToPage("../Home");
+            return RedirectToPage("/student_view/home/index");
         }
 
         //  Mark Attendance 
