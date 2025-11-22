@@ -8,9 +8,20 @@
 
 
 <!-- Upload QR Section -->
-
+@if (TempData["Message"] != null)
+{
+    
+    <div class="absolute justify-center m-auto my-4 max-w-lg w-full rounded-lg bg-green-50 border border-green-300
+                p-4 shadow-sm flex items-start gap-3">
+        <div class="flex-1 text-green-800 text-sm font-medium">
+            @TempData["Message"]
+        </div>
+    </div>
+}
 
     <div class="bg-white shadow-xl border-t-4 border-teal-600 rounded-none overflow-hidden">
+
+   
 
         <div class="p-6">
             <h2 class="text-2xl font-bold text-gray-800 tracking-tight text-center">Mark Attendance</h2>
@@ -74,35 +85,51 @@
                         LOG MY LOCATION
                     </button>
                 </div>
-                
 
-                <div id="locationDisplay" class="mt-4 hidden text-sm text-gray-700 p-3 bg-gray-100 rounded-sm border border-gray-300">
+
+            <div id="locationDisplay" class="text-sm space-y-1 mb-6 border-b pb-4 border-gray-100">
                     <p class="mb-1"><strong>Latitude:</strong> <span id="lat">—</span></p>
                     <p class="mb-1"><strong>Longitude:</strong> <span id="lon">—</span></p>
                     <p class="mb-1"><strong>Accuracy:</strong> <span id="acc">—</span> meters</p>
                 </div>
 
 
-                <div id="locationDiv" class="flex flex-col items-center p-3 hidden">
-                    <p id="locationResult" class="bg-blue-50 border-l-4 border-blue-600 text-blue-800 px-4 py-3 rounded-sm mt-4 w-full text-center text-sm">Checking Attendance. Please Wait</p>
-                    <p id="locationSuccess" class="bg-yellow-50 border-l-4 border-yellow-600 text-yellow-800 px-4 py-3 rounded-sm mt-3 w-full text-center text-sm">Location Success</p>
-                </div>
 
 
+            <div id="locationDiv" class="py-2 flex flex-col justify-center m-auto gap-2">
+
+                <p id="locationResult"
+                   class="max-w-lg text-center text-sm px-4 py-3 rounded-md
+                  bg-blue-50 border-l-4 border-blue-600 text-blue-800
+                  shadow-sm">
+                    Checking Attendance. Please Wait
+                </p>
+
+                <p id="locationSuccess"
+                   class="max-w-lg text-center text-sm px-4 py-3 rounded-md
+                  bg-yellow-50 border-l-4 border-yellow-600 text-yellow-800
+                  shadow-sm">
+                    Location Success
+                </p>
                 <form method="post">
                     <button id="cancelBtn" asp-page-handler="Cancel"
-                            class="w-full bg-red-600 border border-red-700 text-white hover:bg-red-700 font-bold py-2.5 px-8 rounded-sm text-sm transition duration-200 hidden mt-6 shadow-lg tracking-wider">
+                            class="w-full mt-6
+           bg-red-600 hover:bg-red-700 active:bg-red-800
+           text-white font-semibold tracking-wide hidden
+           py-3 rounded-lg text-sm
+           shadow-lg shadow-red-300/40
+           border border-transparent
+           transition-all duration-200">
                         CANCEL
                     </button>
                 </form>
+            </div>
+
+          
 
 
-                @if (TempData["Message"] != null)
-                {
-                    <div class="bg-green-50 border-l-4 border-green-600 text-green-800 p-4 mt-6 rounded-sm" role="alert">
-                        <strong class="font-bold">@TempData["Message"]</strong>
-                    </div>
-                }
+
+               
 
 
             }
@@ -122,31 +149,7 @@
 
 
 @section Scripts {
-    <script src="~/js/loglocation.js"></script>
-    <script src="~/js/modifybutton.js"></script>
+    <script src="~/js/loglocation.js" asp-append-version="true"></script>
+    <script src="~/js/modifybutton.js" asp-append-version="true"></script>
 
-    <script>
-        // Get references to the elements
-        const fileInput = document.getElementById('fileInput');
-        const imagePreview = document.getElementById('imagePreview');
-
-        // Add an event listener for when a file is selected
-        fileInput.addEventListener('change', function(event) {
-            const file = event.target.files[0]; // Get the first file selected
-
-            if (file) {
-                // Initialize the FileReader API
-                const reader = new FileReader();
-
-                // Set up the function to run when the file has been read
-                reader.onload = function(e) {
-                    // Set the image source to the data URL provided by the reader
-                    imagePreview.src = e.target.result;
-                };
-
-                // Read the file content as a data URL (Base64 encoded string)
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
 }
