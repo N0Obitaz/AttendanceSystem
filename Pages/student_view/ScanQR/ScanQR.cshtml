@@ -5,16 +5,16 @@
    
 }
 
-<h2>@ViewData["Title"]</h2>
+
 
 <!-- Upload QR Section -->
-<div class="container mx-auto p-6 max-w-xl font-sans bg-gray-50 min-h-screen">
+
 
     <div class="bg-white shadow-xl border-t-4 border-teal-600 rounded-none overflow-hidden">
 
         <div class="p-6">
-            <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Attendance System Portal</h2>
-            <p class="text-sm text-gray-500 mt-1">QR Scan & Geo-Verification</p>
+            <h2 class="text-2xl font-bold text-gray-800 tracking-tight text-center">Mark Attendance</h2>
+            <p class="text-sm text-gray-500 mt-1 text-center">QR Scan, Verify Location & Succesfully Mark Your Attendance</p>
         </div>
 
         <hr class="border-gray-200" />
@@ -23,23 +23,23 @@
             <h3 class="text-xl font-semibold mb-5 text-gray-700">Upload QR Code</h3>
             <form method="post" enctype="multipart/form-data">
 
-                <div class="mb-5">
+                <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-3 text-sm">Upload QR Code Image</label>
                     <div class="mb-3">
-                        <input type="file" asp-for="InputFile" class="block w-full text-sm text-gray-600
-                            file:mr-4 file:py-2 file:px-4
-                            file:rounded-md file:border-none
-                            file:text-sm file:font-semibold
-                            file:bg-teal-500 file:text-white
-                            hover:file:bg-teal-600 cursor-pointer transition duration-200 shadow-md" />
+                        <input type="file" asp-for="InputFile" id="fileInput" class="block w-full text-sm text-gray-600
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-none
+                file:text-sm file:font-semibold
+                file:bg-teal-500 file:text-white
+                hover:file:bg-teal-600 cursor-pointer transition duration-200 shadow-md" />
                     </div>
                 </div>
 
-                <div class="mb-6">
-                    <img src="~/images/.png" alt="QR Code" class="h-10 w-10 object-cover border border-gray-300 p-1 rounded-sm shadow-inner" />
+                <div class="flex justify-center mb-6">
+                    <img src="~/images/.png" alt="QR Code" id="imagePreview" class=" h-25 w-25 object-cover border border-gray-300 p-1 rounded-sm shadow-inner" />
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 flex justify-center">
                     <button type="submit" asp-page-handler="Scan"
                             class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 px-8 rounded-sm text-sm tracking-wider transition duration-200 shadow-lg">
                         UPLOAD
@@ -51,7 +51,7 @@
 
         <hr class="border-gray-200" />
 
-        <div class="p-6">
+        <div class="p-6 flex flex-col justify-center">
             @if (@Model.OutputText != null && (@Model.OutputEmail != null && @Model.LastName != null && Model.StudentNumber != null))
             {
 
@@ -68,11 +68,13 @@
                 </div>
 
                 <h3 class="text-xl font-semibold mb-4 text-gray-800">Check your Location</h3>
-
-                <button id="btnLocation"
-                        class="border border-teal-600 text-teal-600 hover:bg-teal-50 font-semibold py-2.5 px-8 rounded-sm text-sm transition duration-200 shadow-md">
-                    LOG MY LOCATION
-                </button>
+                <div class="py-2 flex justify-center">
+                    <button id="btnLocation"
+                            class="border w-64 border-teal-600 text-teal-600 hover:text-white hover:bg-teal-700 font-semibold py-2.5 px-8 rounded-sm text-sm transition duration-200 shadow-md">
+                        LOG MY LOCATION
+                    </button>
+                </div>
+                
 
                 <div id="locationDisplay" class="mt-4 hidden text-sm text-gray-700 p-3 bg-gray-100 rounded-sm border border-gray-300">
                     <p class="mb-1"><strong>Latitude:</strong> <span id="lat">—</span></p>
@@ -117,9 +119,34 @@
             }
         </div>
     </div>
-</div>
+
 
 @section Scripts {
     <script src="~/js/loglocation.js"></script>
     <script src="~/js/modifybutton.js"></script>
+
+    <script>
+        // Get references to the elements
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        // Add an event listener for when a file is selected
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0]; // Get the first file selected
+
+            if (file) {
+                // Initialize the FileReader API
+                const reader = new FileReader();
+
+                // Set up the function to run when the file has been read
+                reader.onload = function(e) {
+                    // Set the image source to the data URL provided by the reader
+                    imagePreview.src = e.target.result;
+                };
+
+                // Read the file content as a data URL (Base64 encoded string)
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 }

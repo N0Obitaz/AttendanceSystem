@@ -15,16 +15,15 @@
 html {
     position: relative;
     min-height: 100%;
-    background: linear-gradient(to right, #85ad74, #005540);
+  
 }
 
 body {
     position: absolute;
-    left: 18.5%;
+    left: 17%;
     border-radius: 20px;
-    width: 80vw;
-    
-     
+    width: 83%;
+    background: linear-gradient(to right, #85ad74, #005540);
 }
 
 .sidebar {

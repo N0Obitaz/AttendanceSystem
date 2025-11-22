@@ -15,18 +15,18 @@ html {
 html {
     position: relative;
     min-height: 100%;
-    background: linear-gradient(to right, #85ad74, #005540);
+ 
 }
 
 body {
-  margin: 20px 30px 0 280px; 
-  border-radius: 20px;
-  max-width: 70vw;
-  max-height: 200vh;
-  justify-content: center;
-  margin: 0 auto;
- 
-  
+    margin: 20px 30px 0 280px;
+    border-radius: 20px;
+    max-width: 70vw;
+    max-height: 200vh;
+    justify-content: center;
+    margin: 0 auto;
+    background: linear-gradient(to right, #85ad74, #005540);
+
 }
 
 .sidebar {

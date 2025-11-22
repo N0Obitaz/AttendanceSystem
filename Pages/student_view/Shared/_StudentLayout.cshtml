@@ -26,7 +26,7 @@
                 </div>
 
                 <!-- Title -->
-                <h4 class="text-center text-xl  font-semibold mb-6 tracking-wide text-teal-400">DASHBOARD</h4>
+                <h4 class="text-center text-xl  font-semibold mb-6 tracking-wide text-3xl">DASHBOARD</h4>
 
                 <!-- Navigation Links -->
                 <ul class="flex flex-col space-y-2 flex-grow ">
@@ -35,33 +35,33 @@
                     @{
                         Func<string, string> activeClass = (page) =>
                         ViewContext.RouteData.Values["page"]?.ToString()?.Equals(page, StringComparison.OrdinalIgnoreCase) == true
-                        ? "bg-teal-700 text-white font-bold"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white";
+                        ? "bg-teal-700 text-black font-bold"
+                        : "text-gray-300 hover:bg-gray-700";
                     }
 
                     <li class="rounded-lg">
-                        <a class=" text-black block py-2 px-4 rounded-lg transition duration-150 @activeClass("/student_view/Home/Index")"
+                        <a class=" text-black block py-2 px-4  hover:text-white rounded-lg transition duration-150 @activeClass("/student_view/Home/Index")"
                            asp-page="/student_view/Home/Index">
                             Home
                         </a>
                     </li>
 
                     <li class="rounded-lg">
-                        <a class="text-black hover:text-white block py-2 px-4 rounded-lg transition duration-150 @activeClass("/student_view/ScanQR/ScanQR")"
+                        <a class="text-black hover:text-white block py-2 px-4 hover:text-white rounded-lg transition duration-150 @activeClass("/student_view/ScanQR/ScanQR")"
                            asp-page="/student_view/ScanQR/ScanQR">
                             Mark Attendance
                         </a>
                     </li>
 
                     <li class="rounded-lg">
-                        <a class="text-black hover:text-white block py-2 px-4 rounded-lg transition duration-150 @activeClass("/student_view/ViewAttendance/ViewAttendance")"
+                        <a class="text-black hover:text-white block py-2 px-4 hover:text-white rounded-lg transition duration-150 @activeClass("/student_view/ViewAttendance/ViewAttendance")"
                            asp-page="/student_view/ViewAttendance/ViewAttendance">
-                            View Attendances
+                            My Attendances
                         </a>
                     </li>
 
                     <li class="rounded-lg">
-                        <a class="text-black block py-2 px-4 rounded-lg transition duration-150 @activeClass("/student_view/Setting/Setting")"
+                        <a class="text-black block py-2 px-4 rounded-lg transition  duration-150 @activeClass("/student_view/Setting/Setting")"
                            asp-page="/student_view/Setting/Setting">
                             Settings
                         </a>
@@ -81,22 +81,21 @@
 }
 
 
-<body class="bg-gray-50 min-h-screen">
+<body class="h-full p-8">
 
-    <!-- Main Content Wrapper: Pushed to the right by the sidebar width (w-64 = 16rem) -->
-    <div class="ml-64 p-8">
+    <div class="w-full mt-6 bg-gray-100 rounded-xl sm:p-8">
+      
 
-        <!-- Content Container -->
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
-
-            <!-- Note: The main tag now controls the width and padding of the content inside the body -->
-            <main role="main" class="w-full mx-auto py-8 sm:py-10 max-w-5xl">
-                <!-- This will display your specific page content -->
+            <main role="main" class="w-full mx-auto p-2 py-5 sm:py-10 max-w-5xl">
+            <div class="container mx-auto p-2 w-full font-sans">
                 @RenderBody()
+                </div>
             </main>
-        </div>
+
 
     </div>
+
+</body>
 
     @* <footer class="border-top footer text-muted">
         <div class="container">
@@ -110,5 +109,5 @@
     <script src="~/js/clock.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
-</body>
+
 </html>
