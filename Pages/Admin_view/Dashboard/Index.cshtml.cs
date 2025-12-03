@@ -22,10 +22,10 @@ namespace AttendanceSystem.Pages.Admin_view.Dashboard
         }
 
         [BindProperty(SupportsGet = true)]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.Today;
 
         [BindProperty(SupportsGet = true)]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate { get; set; } = DateTime.Today;
 
         [BindProperty]
         public int? Present { get; set; }
