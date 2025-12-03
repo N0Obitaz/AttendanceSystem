@@ -12,9 +12,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-
-
-
     <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-gray-100 overflow-hidden relative">
 
         <div class="h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
@@ -50,9 +47,10 @@
 
 
                 <p class="text-lg font-bold text-gray-900">@Model.Student.FirstName</p>
-                <p class="text-sm text-gray-400">ID: @Model.Student.StudentId</p>
-                <p class="text-sm text-gray-400">Institute: @Model.Student.Institute</p>
-                <p class="text-sm text-gray-400">Lastname: @Model.Student.LastName</p>
+                <p class="text-sm text-gray-400">@Model.Student.LastName</p>
+                <p class="text-sm text-gray-400">@Model.Student.StudentId</p>
+                <p class="text-sm text-gray-400">@Model.Student.Institute</p>
+               
             </div>
 
             <div class="mt-8">
@@ -73,7 +71,7 @@
             <div class="mt-6 p-3 bg-blue-50 rounded-lg flex items-start gap-3 text-left">
                 <i class="bi bi-info-circle-fill text-blue-500 mt-0.5"></i>
                 <p class="text-xs text-blue-700 leading-relaxed">
-                    This QR code is valid for today only. Do not share a screenshot of this code with others.
+                   This QR will be used to identify and mark your attendance. Do not share a screenshot of this code with others.
                 </p>
             </div>
         </div>

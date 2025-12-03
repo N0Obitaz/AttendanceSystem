@@ -1,0 +1,46 @@
+﻿@{
+    // This helper function stays inside the partial so it works automatically
+    string ActiveClass(string page)
+    {
+        var active = ViewContext.RouteData.Values["page"]?.ToString()?.Equals(page, StringComparison.OrdinalIgnoreCase) ?? false;
+        return active
+            ? "bg-teal-700 text-white group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+            : "text-slate-600 hover:bg-teal-50 hover:text-teal-700 group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition duration-150";
+    }
+}
+
+<ul role="list" class="-mx-2 space-y-1">
+
+    <li>
+        <a asp-page="/Admin_view/Dashboard/Index"
+           class="@ActiveClass("/Admin_view/Dashboard/Index")">
+            <i class="bi bi-speedometer2 text-lg shrink-0"></i>
+            Dashboard
+        </a>
+    </li>
+
+    <li>
+        <a asp-page="/Admin_view/AttendanceMatrix/Matrices"
+           asp-route-id="2300185"
+           class="@ActiveClass("/Admin_view/AttendanceMatrix/Matrices")">
+            <i class="bi bi-table text-lg shrink-0"></i>
+            View Attendances
+        </a>
+    </li>
+
+    <li>
+        <a asp-page="/Admin_view/Students/Index"
+           class="@ActiveClass("/Admin_view/Students/Index")">
+            <i class="bi bi-people text-lg shrink-0"></i>
+            View Students
+        </a>
+    </li>
+
+    <li>
+        <a asp-page="/Admin_view/Setting/Index"
+           class="@ActiveClass("/Admin_view/Setting/Index")">
+            <i class="bi bi-gear text-lg shrink-0"></i>
+            Settings
+        </a>
+    </li>
+</ul>

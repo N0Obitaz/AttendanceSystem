@@ -76,6 +76,7 @@
                     <p><strong>Email:</strong> <span class="text-teal-600 font-medium">@Model.OutputEmail</span></p>
                     <p><strong>Last Name:</strong> @Model.LastName</p>
                     <p><strong>Student Number:</strong> @Model.StudentNumber</p>
+                    <p><strong>Student Number:</strong> @Model.OutputInstitute</p>
                 </div>
 
                 <h3 class="text-xl font-semibold mb-4 text-gray-800">Check your Location</h3>
@@ -125,18 +126,12 @@
                 </form>
             </div>
 
-          
-
-
-
-               
-
 
             }
             else if (Model.OutputText != null)
             {
                 <div class="bg-red-50 border-l-4 border-red-600 text-red-800 p-4" role="alert">
-                    <strong class="font-bold">ERROR!</strong>
+                    <strong class="font-bold">ERROR!: @Model.LastName</strong>
                     <span class="block sm:inline">QR Code is not valid.</span>
 
                     <h3 class="text-base font-medium mt-2">

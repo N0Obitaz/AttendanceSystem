@@ -20,9 +20,9 @@ html {
 
 body {
     position: absolute;
-    left: 17%;
+
     border-radius: 20px;
-    width: 83%;
+    width: 100%;
     background: linear-gradient(to right, #85ad74, #005540);
 }
 

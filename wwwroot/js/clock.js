@@ -12,3 +12,5 @@ setInterval(updateClock, 1000);
 
 //Will run once the page load
 updateClock(); 
+
+

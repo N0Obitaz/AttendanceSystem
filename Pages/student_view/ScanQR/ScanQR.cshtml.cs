@@ -204,12 +204,10 @@ namespace AttendanceSystem.Pages.ScanQR
             try
             {
                 var jsonData = JsonConvert.DeserializeObject<dynamic>(OutputText);
-                OutputEmail = jsonData?.Email;
-                LastName = jsonData?.LastName;
+                OutputEmail = jsonData?.email;
+                LastName = jsonData?.lastname;
                 StudentNumber = jsonData?.StudentNumber;
-
-               
-
+                OutputInstitute = jsonData?.institute;
 
                 // Save to TempData for later use in LogLocation
                 if (!string.IsNullOrEmpty(StudentNumber) && jsonData != null)
@@ -226,7 +224,7 @@ namespace AttendanceSystem.Pages.ScanQR
             }
             catch (Exception ex)
             {
-                OutputEmail = "Error parsing JSON:eeess " + ex.Message;
+                OutputEmail = "Error parsing JSON: " + ex.Message;
              
                 Log.Error(ex, "Error decoding QR content");
             }
@@ -239,8 +237,6 @@ namespace AttendanceSystem.Pages.ScanQR
 
             try
             {
-               
-
                 using var image = Image.Load<Rgba32>(file.OpenReadStream());
 
 
@@ -255,11 +251,6 @@ namespace AttendanceSystem.Pages.ScanQR
                     image.Height, 
                     RGBLuminanceSource.BitmapFormat.RGB32
                     );
-
-
-
-
-               
 
                 var reader = new BarcodeReaderGeneric();
                 var result = reader.Decode(luminance);
