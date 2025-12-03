@@ -24,8 +24,6 @@ namespace AttendanceSystem.Pages.Students
         {
             _context = context;
 
-
-
         }
         public DateTime Today { get; set; }
         public IList<Student>? Student { get; set; }
@@ -33,83 +31,77 @@ namespace AttendanceSystem.Pages.Students
         public int TotalPresent { get; set; }
         public int TotalAbsent { get; set; }
 
+        public string? Status { get; set; }
+
         public async Task OnGetAsync()
         {
+            var now = DateTime.UtcNow.AddHours(8);
+            Today = now.Date;
 
-            // load attendance records
+            var cutOffTime = new DateTime(Today.Year, Today.Month, Today.Day, 13, 0, 0);
+
+            
             Student = await _context.Student
-               .Include(s => s.Attendances)
-               .ToListAsync();
+                .Include(s => s.Attendances)
+                .ToListAsync();
 
-            Today = DateTime.UtcNow.AddHours(8).Date;
+           
+            var newAttendances = new List<Attendance>();
+            var newLogs = new List<TransactionLog>();
 
-          
-
+         
             foreach (var student in Student)
             {
-                // Check if student has attendance for today 
-
-                bool hasAttendanceToday = student.Attendances != null && student.Attendances.Any(a => a.Date.Day == Today.Day);
+           
+                bool hasAttendanceToday = student.Attendances != null &&
+                                          student.Attendances.Any(a => a.Date.Date == Today);
 
                 if (hasAttendanceToday)
                 {
                     continue;
                 }
 
-                // If no attendace for today, create its absent record
-
-                // Check current time if it is past cutoff time (1:00 PM)
-                var currentTime = DateTime.UtcNow.AddHours(8);
-
-                var cutOffTime = new DateTime(Today.Year, Today.Month, Today.Day, 13, 0, 0);
-
-                if (currentTime >= cutOffTime)
+             
+                if (now >= cutOffTime)
                 {
-                    using var transaction = await _context.Database.BeginTransactionAsync();
-
-                    try
+                   
+                    var attendance = new Attendance
                     {
-                        // Create attendance record
-                        var attendance = new Attendance
-                        {
-                            StudentId = student.StudentId,
-                            Date = DateTime.UtcNow.Date,
-                            Status = "Absent"
-                        };
+                        StudentId = student.StudentId,
+                        Date = Today, 
+                        Status = "Absent"
+                    };
+                    newAttendances.Add(attendance);
 
-                        _context.Attendances.Add(attendance);
-                        await _context.SaveChangesAsync();
-
-                        // Create transaction log
-                        var transactionLog = new TransactionLog
-                        {
-                            StudentId = student.StudentId,
-                            Action = "Marked Present",
-                            Timestamp = DateTime.UtcNow
-                        };
-
-                        _context.TransactionLogs.Add(transactionLog);
-                        await _context.SaveChangesAsync();
-
-                        await transaction.CommitAsync();
-
-                        Log.Information("Attendance marked Absent for Student ID {StudentId}", student.StudentId);
-                    }
-                    catch
+               
+                    var transactionLog = new TransactionLog
                     {
-                        await transaction.RollbackAsync();
-                        throw;
-                    }
+                        StudentId = student.StudentId,
+                        Action = "Marked Absent (Auto)",
+                        Timestamp = now
+                    };
+                    newLogs.Add(transactionLog);
                 }
-                TotalPresent = await _context.Attendances
-               .Where(a => a.Date.Day == Today.Day && a.Status == "Present")
-               .CountAsync();
-
-                TotalAbsent = await _context.Attendances
-                    .Where(a => a.Date.Day == Today.Day && a.Status == "Absent")
-                    .CountAsync();
-
             }
+
+                
+            if (newAttendances.Any())
+            {
+                _context.Attendances.AddRange(newAttendances);
+                _context.TransactionLogs.AddRange(newLogs);
+
+                await _context.SaveChangesAsync();
+
+                Log.Information("Marked {Count} students as Absent.", newAttendances.Count);
+            }
+
+            // 7. Calculate Totals (OUTSIDE the loop)
+            // We re-query the DB to ensure we get the fresh counts including the ones we just added
+            TotalPresent = await _context.Attendances
+                .CountAsync(a => a.Date.Date == Today && a.Status == "Present");
+
+            TotalAbsent = await _context.Attendances
+                .CountAsync(a => a.Date.Date == Today && a.Status == "Absent");
         }
     }
 }

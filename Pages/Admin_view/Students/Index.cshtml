@@ -10,6 +10,7 @@
 <div class="student-cont">
     <div class="card-body p-0">
         <h1 class="text-success">Students</h1>
+        <p>@Model.Status</p>
     </div>
     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
 
@@ -17,21 +18,22 @@
             <i class="bi bi-person-plus group-hover:scale-110 transition-transform"></i>
             Enroll New Student
         </a>
-
         <div class="flex items-center gap-4">
-            <div class="flex flex-col items-end px-4 py-2 bg-green-50 rounded-lg border border-green-100">
-                <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Date Today</span>
-                <span class="text-lg font-bold text-green-800">@Model.Today</span>
-            </div>
+         
 
             <div class="flex flex-col items-end px-4 py-2 bg-green-50 rounded-lg border border-green-100">
-                <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Attendances</span>
+                <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Present</span>
                 <span class="text-lg font-bold text-green-800">@Model.TotalPresent</span>
             </div>
 
             <div class="flex flex-col items-end px-4 py-2 bg-red-50 rounded-lg border border-red-100">
                 <span class="text-xs font-bold text-red-700 uppercase tracking-wide">Absents</span>
                 <span class="text-lg font-bold text-red-800">@Model.TotalAbsent</span>
+            </div>
+
+               <div class="flex flex-col items-end px-4 py-2 bg-green-50 rounded-lg border border-green-100">
+                <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Date Today</span>
+                <span class="text-lg font-bold text-green-800">@Model.Today</span>
             </div>
         </div>
 
@@ -90,8 +92,8 @@
                         }
                         else
                         {
-                            <a asp-page="/Attendances/Mark" asp-route-id="@item.StudentId" class="btn btn-sm btn-primary">
-                                Mark Attendance
+                            <a class="btn btn-sm btn-toolbar">
+                                Haven't Marked Attendance Yet
                             </a>
                         }
                     </td>

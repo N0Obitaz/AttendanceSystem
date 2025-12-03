@@ -21,11 +21,16 @@ namespace AttendanceSystem.Models
         [Display(Name ="Last Name")]
         public string? LastName { get; set; }
 
+        [Display(Name = "Email Address")]
+        [StringLength(30)]
+        public string? Email { get; set; }
         public string? Username { get; set; }
   
         public string? Password { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }
         public ICollection<TransactionLog>? TransactionLogs { get; set; }
+
+        public string? Institute { get; set; }
 
     }
 }

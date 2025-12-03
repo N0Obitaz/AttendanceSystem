@@ -35,7 +35,7 @@
                         Func<string, string> activeClass = (page) =>
                         ViewContext.RouteData.Values["page"]?.ToString()?.Equals(page, StringComparison.OrdinalIgnoreCase) == true
                         ? "bg-teal-700 text-white font-bold "
-                        : "hover:bg-gray-700 text-slate-50";
+                        : "hover:bg-teal-700 text-slate-50";
                     }
 
                     <li class="rounded-lg">

@@ -44,6 +44,7 @@ namespace AttendanceSystem.Pages.Students
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
+            // 1. Fetch Student and Include Attendances
             var student = await _context.Student
                 .Include(s => s.Attendances)
                 .FirstOrDefaultAsync(s => s.StudentId == id);
@@ -53,18 +54,25 @@ namespace AttendanceSystem.Pages.Students
                 return NotFound();
             }
 
-            var dateToday = student.Attendances
-                .FirstOrDefault(a => a.Date.Date == DateTime.UtcNow.Date);
+            // 2. Define "Today" correctly (Sync with your Timezone)
+            // If you are in PH, ensure you add the offset, or use the same logic as your Create method.
+            var todayDate = DateTime.UtcNow.AddHours(8).Date;
 
+            // 3. Find the specific record by comparing the FULL Date (Year + Month + Day)
+            var attendanceToDelete = student.Attendances
+                .FirstOrDefault(a => a.Date.Date == todayDate);
 
-            if (dateToday != null)
+            // 4. Remove and Save
+            if (attendanceToDelete != null)
             {
-                student.Attendances.Remove(dateToday);
+                // It is safer to remove directly from the Context Set 
+                // to ensure EF tracks the deletion correctly.
+                _context.Attendances.Remove(attendanceToDelete);
 
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
             }
-            return RedirectToPage("./Index"); 
+
+            return RedirectToPage("./Index");
         }
     }
 }

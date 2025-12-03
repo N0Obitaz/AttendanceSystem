@@ -35,6 +35,13 @@
                             @Html.DisplayFor(model => model.Student.LastName)
                         </dd>
 
+                        <dt class="col-sm-3 fw-bold">
+                            @Html.DisplayNameFor(model => model.Student.Institute)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Student.Institute)
+                        </dd>
+
                         <dt class="col-sm-3 fw-bold">Total Attendances</dt>
                         <dd class="col-sm-9">
                             @Model.Student.Attendances.Count()

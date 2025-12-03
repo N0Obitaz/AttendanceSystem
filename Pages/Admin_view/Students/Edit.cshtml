@@ -20,6 +20,11 @@
                     <span asp-validation-for="Student.Username" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="Student.Email" class="form-label fw-bold"></label>
+                    <input asp-for="Student.Email" class="form-control" />
+                    <span asp-validation-for="Student.Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <label asp-for="Student.Password" class="form-label fw-bold"></label>
                     <input asp-for="Student.Password" class="form-control" />
                     <span asp-validation-for="Student.Password" class="text-danger"></span>
@@ -35,6 +40,13 @@
                     <label asp-for="Student.LastName" class="form-label fw-bold"></label>
                     <input asp-for="Student.LastName" class="form-control" />
                     <span asp-validation-for="Student.LastName" class="text-danger"></span>
+                </div>
+
+
+                <div class="mb-3">
+                    <label asp-for="Student.Institute" class="form-label fw-bold"></label>
+                    <input asp-for="Student.Institute" class="form-control" />
+                    <span asp-validation-for="Student.Institute" class="text-danger"></span>
                 </div>
 
                 <div class="d-flex justify-content-between">

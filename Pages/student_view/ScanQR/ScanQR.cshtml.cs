@@ -38,6 +38,7 @@ namespace AttendanceSystem.Pages.ScanQR
         public string? OutputText { get; set; }
 
         public string? OutputEmail { get; set; }
+        public string? OutputInstitute { get; set; }
         public string? LastName { get; set; }
         public string? StudentNumber { get; set; }
         public string? Name { get; set; }
@@ -206,7 +207,9 @@ namespace AttendanceSystem.Pages.ScanQR
                 OutputEmail = jsonData?.Email;
                 LastName = jsonData?.LastName;
                 StudentNumber = jsonData?.StudentNumber;
-                
+
+               
+
 
                 // Save to TempData for later use in LogLocation
                 if (!string.IsNullOrEmpty(StudentNumber) && jsonData != null)
