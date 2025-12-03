@@ -14,8 +14,71 @@
     @if(ViewData["HideHeader"] == null || !(bool)ViewData["HideHeader"])
     {
         <header>
+
+        <nav class="sidebar top-0 m-3 position-fixed " style="height: 95vh;">
+            <div class="p-3 flex flex-col h-full ">
+
+                
+                <div class="flex justify-center items-center mb-6">
+        
+                    <img src="/images/cdm.png" alt="CDM Logo" class="w-24 h-auto rounded-full ring-2 ring-teal-500/50">
+                </div>
+
+              
+                <h4 class="text-center text-xl  font-semibold mb-6 tracking-wide text-3xl">DASHBOARD</h4>
+
+
+                <ul class="flex flex-col space-y-2 flex-grow ">
+
+ 
+                    @{
+                        Func<string, string> activeClass = (page) =>
+                        ViewContext.RouteData.Values["page"]?.ToString()?.Equals(page, StringComparison.OrdinalIgnoreCase) == true
+                        ? "bg-teal-700 text-white font-bold "
+                        : "hover:bg-gray-700 text-slate-50";
+                    }
+
+                    <li class="rounded-lg">
+                        <a class=" text-black hover\:text-red-300 block py-2 px-4 rounded-lg transition duration-150 @activeClass("/Admin_view/Dashboard/Index")"
+                           asp-page="/Admin_view/Dashboard/Index">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="rounded-lg">
+                        <a class="text-black hover:text-white block py-2 px-4 hover:text-white rounded-lg transition duration-150 @activeClass("/Admin_view/AttendanceMatrix/Matrices")"
+                           asp-page="/Admin_view/AttendanceMatrix/Matrices" asp-route-id="2300185">
+                            View Attendances
+                        </a>
+                    </li>
+
+                    <li class="rounded-lg">
+                        <a class="text-black hover:text-white block py-2 px-4 hover:text-white rounded-lg transition duration-150 @activeClass("/Admin_view/Students/Index")"
+                           asp-page="/Admin_view/Students/Index">
+                            View Students
+                        </a>
+                    </li>
+
+                    <li class="rounded-lg">
+                        <a class="text-black block py-2 px-4 rounded-lg transition  duration-150 @activeClass("/Admin_view/Setting/Index")"
+                           asp-page="/Admin_view/Setting/Index">
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Logout Link (Pushed to the bottom) -->
+                <div class="mt-auto pt-4 border-t border-gray-700">
+                    <a class="block py-2 px-4 rounded-lg text-red-400 hover:bg-gray-700 hover:text-red-300 transition duration-150 font-semibold"
+                       asp-page="/Logout/Index">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
            
-            <nav class="sidebar top-0 m-3  text-white  position-fixed " style="height: 95vh;">
+            @* <nav class="sidebar top-0 m-3  text-white  position-fixed " style="height: 95vh;">
                 <div class="p-3">
                     <div class="d-flex justify-content-center align-items-center" >
                         <img src="/images/cdm.png" alt="Centered Image" style="width: 100px; height: auto;">
@@ -45,7 +108,7 @@
                     </ul>
 
                 </div>
-            </nav>
+            </nav> *@
         </header> 
         
 
