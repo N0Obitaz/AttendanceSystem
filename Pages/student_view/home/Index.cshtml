@@ -26,7 +26,8 @@
                 <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-teal-600">
                     <i class="bi bi-person-circle fs-4"></i>
                 </div>
-                <span class="font-medium hidden sm:block">Student Name</span>
+                <span class="font-medium hidden sm:block">@Model.Student.FirstName</span>
+               
             </button>
         </div>
     </header>
@@ -45,20 +46,53 @@
                             <p class="text-indigo-100 mb-6 max-w-md">
                                 Don't forget to mark your attendance before 1:00 PM to avoid being marked late.
                             </p>
-                            <button class="bg-white text-green-600 font-semibold py-2.5 px-6 rounded-lg shadow-sm hover:bg-indigo-50 transition duration-200 flex items-center gap-2">
-                                <i class="bi bi-calendar-check"></i>
-                                Mark Attendance Now
-                            </button>
+
+                            <a asp-page="/student_view/ScanQR/ScanQr" class="bg-white text-green-600 font-semibold md:w-72 py-2.5 px-6 rounded-lg shadow-sm hover:bg-green-700 transition duration-200 flex items-center gap-2"><i class="bi bi-calendar-check"></i>Mark Attendance Now</a>
                         </div>
                         <i class="bi bi-clock-history text-6xl opacity-20"></i>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 h-64">
-                <h3 class="font-bold text-slate-700 mb-4">Recent Activity</h3>
-                <div class="text-slate-500 text-sm">
-                    <p>Your recent attendance logs will appear here.</p>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:h-64 flex flex-col">
+
+                <h3 class="font-bold text-slate-700 mb-4 shrink-0">Recent Activity</h3>
+
+                <div class="flex flex-col overflow-y-auto no-scrollbar h-full">
+                    @if (Model.Student.TransactionLogs != null && Model.Student.TransactionLogs.Any())
+                    {
+                        @foreach (var transaction in Model.Student.TransactionLogs)
+                        {
+                            <div class="p-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors duration-150">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-8 w-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                            <i class="bi bi-activity text-sm"></i>
+                                        </div>
+
+                                        <div class="flex items-center justify-between w-full">
+
+                                            <div class="flex flex-col">
+                                                <p class="text-sm font-semibold text-gray-800">@transaction.Action</p>
+                                                <p class="text-xs text-gray-400">Transaction ID: #@transaction.TransactionId</p>
+                                            </div>
+
+                                            <div class="text-right shrink-0 ml-4">
+                                                <p class="text-xs text-gray-400">@transaction.Timestamp</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="p-6 text-center text-gray-400 text-sm">
+                            No recent activity found.
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -71,9 +105,18 @@
                     <i class="bi bi-bar-chart-line text-slate-400"></i>
                 </div>
 
-                <div class="mb-4 p-4 rounded-xl bg-green-50 border border-green-100">
-                    <p class="text-sm text-green-600 font-medium">Total Present</p>
-                    <p class="text-3xl font-bold text-slate-800">24 <span class="text-sm font-normal text-slate-400">days</span></p>
+                <div class="mb-4 p-4 rounded-xl bg-green-50 border border-green-100 hover:shadow-sm transition-all duration-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <p class="text-sm text-green-600 font-medium">Attendance Streak</p>
+                        <i class="bi bi-fire text-xl @(Model.AttendanceStreak > 0 ? "text-orange-500" : "text-gray-300")"></i>
+                    </div>
+
+                    <p class="text-3xl font-bold text-slate-800">
+                        @Model.AttendanceStreak
+                        <span class="text-sm font-normal text-slate-400">
+                            @(Model.AttendanceStreak == 1 ? "day" : "days")
+                        </span>
+                    </p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
@@ -101,6 +144,17 @@
 </div>
 
 
+<style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+</style>
 
 @section Scripts {
     <script src="~/js//clock.js">
