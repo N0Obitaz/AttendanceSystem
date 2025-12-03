@@ -9,17 +9,41 @@
     <p class="text-sm text-gray-500">Overview for today</p>
 </div>
 
-<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+<div class="mb-8 max-w-lg md: mt-5">
+    <form method="post" asp-page-handler="Filter" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 items-end md:items-center justify-between">
+        <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <div class="flex flex-col gap-1">
+                <label asp-for="StartDate" class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Start Date</label>
+                <input type="date" asp-for="StartDate" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-gray-700 p-2.5 border" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label asp-for="EndDate" class="text-xs font-semibold text-gray-500 uppercase tracking-wide">End Date</label>
+                <input type="date" asp-for="EndDate" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-gray-700 p-2.5 border" />
+            </div>
+            <div class="w-full md:w-auto">
+                <button type="submit" class="w-full md:w-auto flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-medium py-2.5 px-6 rounded-lg transition-colors duration-200 shadow-sm">
+                    <i class="bi bi-funnel-fill"></i>
+                    Filter Results
+                </button>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
 
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
         <div class="flex items-center gap-5">
             <div class="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 ring-4 ring-blue-50/50">
-                <i class="bi bi-check-circle-fill text-2xl"></i>
+                <i class="bi bi-check-circle-fill text-3xl"></i>
             </div>
 
             <div>
                 <p class="text-sm font-medium text-gray-500">Marked Present</p>
-                <p class="text-3xl font-bold text-gray-900">350</p>
+                <p class="text-3xl font-bold text-gray-900">@Model.Present</p>
             </div>
         </div>
 
@@ -35,7 +59,7 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-gray-500">Total Absents</p>
-                <p class="text-3xl font-bold text-gray-900">15</p>
+                <p class="text-3xl font-bold text-gray-900">@Model.Absent</p>
             </div>
         </div>
 
@@ -51,12 +75,73 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-gray-500">Late Arrivals</p>
-                <p class="text-3xl font-bold text-gray-900">20</p>
+                <p class="text-3xl font-bold text-gray-900">@Model.Late</p>
             </div>
         </div>
 
         <div class="mt-4 flex items-center gap-1 text-sm text-gray-500">
             Arrived past cutoff
+        </div>
+    </div>
+
+    <!-- Implement Filter Attendances -->
+
+    
+
+</div>
+
+
+
+
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+        <div class="flex items-center gap-5">
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 ring-4 ring-blue-50/50">
+                <i class="bi bi-check-circle-fill text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500">Filtered Present</p>
+                <p class="text-3xl font-bold text-gray-900">@Model.FilteredPresent</p>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-1 text-sm text-gray-500">
+            <span class="font-medium text-blue-600">
+                @Model.StartDate.ToString("MMM dd") - @Model.EndDate.ToString("MMM dd")
+            </span>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+        <div class="flex items-center gap-5">
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-re d-50 text-red-600 ring-4 ring-red-50/50">
+                <i class="bi bi-person-x-fill text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500">Filtered Absents</p>
+                <p class="text-3xl font-bold text-gray-900">@Model.FilteredAbsent</p>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-1 text-sm text-gray-500">
+            Unaccounted for in range
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+        <div class="flex items-center gap-5">
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 text-amber-600 ring-4 ring-amber-50/50">
+                <i class="bi bi-clock-fill text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500">Filtered Late</p>
+                <p class="text-3xl font-bold text-gray-900">@Model.FilteredLate</p>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-1 text-sm text-gray-500">
+            Late arrivals in range
         </div>
     </div>
 
