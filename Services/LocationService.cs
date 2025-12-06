@@ -3,8 +3,8 @@
     public class LocationService
     {
         // Your classroom location
-        private const double ClassroomLat = 14.748449;
-        private const double ClassroomLon = 121.158867;
+        private const double ClassroomLat = 14.739357;
+        private const double ClassroomLon = 121.137886;
         private const double AllowedRadius = 50; // 50 meters
         private const double MinimumAccuracy = 300; // Require GPS accuracy better than 20m
 

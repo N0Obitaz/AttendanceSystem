@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AttendanceSystem.Models;
 using System.Threading.Tasks;
@@ -16,6 +16,22 @@ namespace AttendanceSystem.Pages
         [BindProperty]
         public string? CurrentUser { get; set; }
 
+      
+        [BindProperty]
+        public string? Email { get; set; }
+
+        [BindProperty]
+        public string? StudentNumber { get; set; }
+        [BindProperty]
+        public string? FirstName { get; set; }
+        [BindProperty]
+        public string? LastName { get; set; }
+
+        [BindProperty]
+        public string? Institute { get; set; }
+
+        [BindProperty]
+        public string? RegisterPassword { get; set; }
         [BindProperty]
         public string? Password { get; set; }
 
@@ -47,8 +63,7 @@ namespace AttendanceSystem.Pages
             return Page();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> HandleLoginAsync()
         {
             if (string.IsNullOrEmpty(CurrentUser) || string.IsNullOrEmpty(Password))
             {
@@ -79,6 +94,71 @@ namespace AttendanceSystem.Pages
 
             //  Invalid login
             ModelState.AddModelError(string.Empty, "Invalid username or password.");
+            return Page();
+        }
+
+        public async Task<IActionResult> HandleRegisterAsync()
+        {
+            try
+            {
+                Console.WriteLine(RegisterPassword);
+                if (!ModelState.IsValid)
+                    return Page();
+
+                if (string.IsNullOrWhiteSpace(StudentNumber) ||
+                    string.IsNullOrWhiteSpace(FirstName) ||
+                    string.IsNullOrWhiteSpace(LastName) ||
+                    string.IsNullOrWhiteSpace(Email) ||
+                    string.IsNullOrWhiteSpace(RegisterPassword)) 
+                {
+                    ModelState.AddModelError("", "All fields are required.");
+                    return Page();
+                }
+                string output = StudentNumber.Replace("-", "");
+                Console.WriteLine($"{output} and {StudentNumber}");
+
+
+                string user = new string(StudentNumber.Where(c => c != '-').ToArray());
+                var student = await _context.Student
+                    .FirstOrDefaultAsync(s => s.StudentId.ToString() == user && s.Password == Password);
+
+                if(student == null) {
+
+                    _context.Student.Add(new Student
+                    {
+                        StudentId = int.Parse(StudentNumber),
+                        FirstName = FirstName,
+                        LastName = LastName,
+                        Institute = Institute,
+                        Email = Email,
+                        Password = RegisterPassword
+                    });
+
+                    await _context.SaveChangesAsync();
+                }
+
+
+                // Success path
+                return RedirectToPage("/Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                // You can return the Page with an error, or redirect
+                return RedirectToPage("./Index");
+            }
+            return Page();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OnPostAsync(string action)
+        {
+            if (action == "login")
+                return await HandleLoginAsync();
+
+            if (action == "register")
+                return await HandleRegisterAsync();
+
             return Page();
         }
 
