@@ -38,7 +38,7 @@ namespace AttendanceSystem.Pages.Students
             var now = DateTime.UtcNow.AddHours(8);
             Today = now.Date;
 
-            var cutOffTime = new DateTime(Today.Year, Today.Month, Today.Day, 13, 0, 0);
+            var cutOffTime = new DateTime(Today.Year, Today.Month, Today.Day, 12, 0, 0);
 
             
             Student = await _context.Student
