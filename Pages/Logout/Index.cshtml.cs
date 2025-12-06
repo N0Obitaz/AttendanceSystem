@@ -24,7 +24,7 @@ namespace AttendanceSystem.Pages
             await HttpContext.SignOutAsync("CustomSession");
 
             // Optional: clear any additional cookies if needed
-            // Response.Cookies.Delete(".AspNetCore.CustomSession");
+            Response.Cookies.Delete(".AspNetCore.CustomSession");
 
             // Redirect to login page after logout
             return RedirectToPage("/Index");
