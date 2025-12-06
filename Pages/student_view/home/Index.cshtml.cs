@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using AttendanceSystem.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
-namespace AttendanceSystem.Pages.student_view
+namespace AttendanceSystem.Pages.student_view.Home
 {
+    [Authorize(Policy = "StudentOnly")]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class IndexModel : PageModel
     {
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
@@ -29,6 +32,7 @@ namespace AttendanceSystem.Pages.student_view
 
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Console.WriteLine(User.Identity.Name);
 
             string username = User.Identity.Name;
             Student = await _context.Student
