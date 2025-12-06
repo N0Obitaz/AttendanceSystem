@@ -6,7 +6,7 @@
         private const double ClassroomLat = 14.739357;
         private const double ClassroomLon = 121.137886;
         private const double AllowedRadius = 50; // 50 meters
-        private const double MinimumAccuracy = 300; // Require GPS accuracy better than 20m
+        private const double MinimumAccuracy = 350; // Require GPS accuracy better than 20m
 
         public (bool IsWithinPerimeter, double Distance, string Message)
             ValidateLocation(double userLat, double userLon, double userAccuracy)

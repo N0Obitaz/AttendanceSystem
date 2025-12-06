@@ -43,7 +43,6 @@ builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeFolder("/student_view", "StudentOnly");
     options.Conventions.AuthorizeFolder("/Admin_view", "AdminOnly");
-    options.Conventions.AuthorizeFolder("/TransactionLogs");
     options.Conventions.AllowAnonymousToPage("/Index");
 });
 
