@@ -19,6 +19,9 @@ namespace AttendanceSystem.Pages.student_view
         public Student? Student { get; set; }
         public int? AttendanceStreak { get; set; }
 
+        public int? LateMarks { get; set; } = 0;
+
+        public int? AbsentMarks { get; set; } = 0;
 
         public async Task OnGetAsync()
         {
@@ -30,8 +33,19 @@ namespace AttendanceSystem.Pages.student_view
             string username = User.Identity.Name;
             Student = await _context.Student
                 .Include(s => s.TransactionLogs.OrderByDescending(t => t.Timestamp))
+                .Include(s => s.Attendances)
                 .FirstOrDefaultAsync(s => s.StudentId.ToString() == username);
-                
+
+            if(Student != null || Student.Attendances != null)
+            {
+                AbsentMarks = Student.Attendances.Count(a => a.Status == "Absent");
+                LateMarks = Student.Attendances.Count(a => a.Status == "Late");
+
+                Console.WriteLine($"Absent {AbsentMarks}");
+                Console.WriteLine($"Late {LateMarks}");
+
+            }
+
 
             await CalculateStreak();
         }
