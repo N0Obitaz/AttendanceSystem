@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # appsettings.json files that contain sensitive data
-appsettings*.json
+appsettings.json

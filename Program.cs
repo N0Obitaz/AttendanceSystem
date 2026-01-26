@@ -52,8 +52,19 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("StudentOnly", policy => policy.RequireRole("Student"));
 });
 
-builder.Services.AddDbContext<AttendanceSystemContext>(options =>   
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
+builder.Services.AddDbContext<AttendanceSystemContext>(options =>
+    options.UseSqlServer(
+
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+       sqlServerOptionsAction: sqlOptions =>
+       {
+           // This is the magic line that fixes the error
+           sqlOptions.EnableRetryOnFailure(
+               maxRetryCount: 5,
+               maxRetryDelay: TimeSpan.FromSeconds(30),
+               errorNumbersToAdd: null);
+       }));
+        
 
 var app = builder.Build();
 
@@ -70,12 +81,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// ADD THIS MIDDLEWARE - ORDER IS CRITICAL!
-app.UseSession();      // Session must come before Authentication
+
+app.UseSession();      
 
     
-app.UseAuthentication(); // Add this line - it was missing
-app.UseAuthorization();  // This was already here
+app.UseAuthentication(); 
+app.UseAuthorization(); 
 
 app.MapRazorPages();
 
