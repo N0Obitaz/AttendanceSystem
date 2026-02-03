@@ -27,38 +27,42 @@
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var item in Model.TransactionLog)
-                    {
-                        <tr>
-                            <td>
-                                <span class="badge bg-gradient text-dark">@item.Action</span>
-                            </td>
-                            <td>
-                                <i class="bi bi-calendar-event text-primary"></i>
-                                @item.Timestamp.AddHours(8).ToString("MMMM dd, yyyy - hh:mm tt")
-                            </td>
-                            <td>
-                                <span class="fw-bold text-secondary">@item.StudentId</span>
-                            </td>
-                            <td>
-                                <i class="bi bi-person-fill text-success"></i>
-                                <a asp-page="../Students/Details" asp-route-id="@item.StudentId" class="text-dark">@item.Student.LastName</a>
-                                
-                            </td>
-                            <td class="text-center">
-                                <a asp-page="./Details" asp-route-id="@item.TransactionId" class="btn btn-sm btn-secondary me-1">
-                                    <i class="bi bi-eye"></i> Details
-                                </a>
-                                <!--
-                                    <a asp-page="./Delete" asp-route-id="@item.TransactionId" class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                                -->
-                            </td>
-                        </tr>
-                    }
-                </tbody>
+                @if(Model.TransactionLog is not null)
+                {
+                    <tbody>
+                        @foreach (var item in Model.TransactionLog)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge bg-gradient text-dark">@item.Action</span>
+                                </td>
+                                <td>
+                                    <i class="bi bi-calendar-event text-primary"></i>
+                                    @item.Timestamp.AddHours(8).ToString("MMMM dd, yyyy - hh:mm tt")
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-secondary">@item.StudentId</span>
+                                </td>
+                                <td>
+                                    <i class="bi bi-person-fill text-success"></i>
+                                    <a asp-page="../Students/Details" asp-route-id="@item.StudentId" class="text-dark">@item.Student.LastName</a>
+
+                                </td>
+                                <td class="text-center">
+                                    <a asp-page="./Details" asp-route-id="@item.TransactionId" class="btn btn-sm btn-secondary me-1">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+                                    <!--
+                                        <a asp-page="./Delete" asp-route-id="@item.TransactionId" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                    -->
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+               
             </table>
         </div>
     </div>

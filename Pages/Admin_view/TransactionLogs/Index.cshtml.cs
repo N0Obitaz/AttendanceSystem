@@ -7,26 +7,43 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AttendanceSystem.Data;
 using AttendanceSystem.Models;
+using Microsoft.Extensions.Caching.Distributed;
+using AttendanceSystem.Extensions;
 
 namespace AttendanceSystem.Pages.TransactionLogs
 {
     public class IndexModel : PageModel
     {
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
-
-        public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context)
+        private readonly IDistributedCache _cache;
+        public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context, IDistributedCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         public IList<TransactionLog> TransactionLog { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            TransactionLog = await _context.TransactionLogs
-                .Include(t => t.Student)
-                .OrderByDescending(t => t.Timestamp)
-                .ToListAsync();
+            string cacheKey = "TransactionLogsAll";
+
+            TransactionLog = await _cache.GetRecordAsync<List<TransactionLog>>(cacheKey) ?? new ();
+
+            if (TransactionLog == null)
+            {
+                TransactionLog = await _context.TransactionLogs
+                  .Include(t => t.Student)
+                  .OrderByDescending(t => t.Timestamp)
+                  .ToListAsync();
+                Console.WriteLine("Obtained data from the Azure SQL Database. Setting it to the cache.");
+                await _cache.SetRecordAsync(cacheKey, TransactionLog, TimeSpan.FromMinutes(10));
+            } else
+            {
+                Console.WriteLine("Obtained data from the distributed cache.");
+            }
+
+          
         }
     }
 }
