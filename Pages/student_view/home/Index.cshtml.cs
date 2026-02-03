@@ -32,7 +32,7 @@ namespace AttendanceSystem.Pages.student_view.Home
 
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Console.WriteLine(User.Identity.Name);
+            
 
             string username = User.Identity.Name;
             Student = await _context.Student
