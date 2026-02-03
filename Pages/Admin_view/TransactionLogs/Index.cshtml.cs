@@ -28,16 +28,19 @@ namespace AttendanceSystem.Pages.TransactionLogs
         {
             string cacheKey = "TransactionLogsAll";
 
-            var cachedTransactionLogs = await _cache.GetRecordAsync<List<TransactionLog>>(cacheKey);
+            TransactionLog = await _cache.GetRecordAsync<List<TransactionLog>>(cacheKey) ?? new ();
 
-            if (cachedTransactionLogs == null)
+            if (TransactionLog == null)
             {
                 TransactionLog = await _context.TransactionLogs
                   .Include(t => t.Student)
                   .OrderByDescending(t => t.Timestamp)
                   .ToListAsync();
-
+                Console.WriteLine("Obtained data from the Azure SQL Database. Setting it to the cache.");
                 await _cache.SetRecordAsync(cacheKey, TransactionLog, TimeSpan.FromMinutes(10));
+            } else
+            {
+                Console.WriteLine("Obtained data from the distributed cache.");
             }
 
           
