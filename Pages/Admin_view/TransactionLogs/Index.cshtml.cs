@@ -7,16 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AttendanceSystem.Data;
 using AttendanceSystem.Models;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace AttendanceSystem.Pages.TransactionLogs
 {
     public class IndexModel : PageModel
     {
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
-
-        public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context)
+        private readonly IDistributedCache _cache;
+        public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context, IDistributedCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         public IList<TransactionLog> TransactionLog { get;set; } = default!;
