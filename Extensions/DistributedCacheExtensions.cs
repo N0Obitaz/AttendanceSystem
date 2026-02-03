@@ -16,7 +16,11 @@ namespace AttendanceSystem.Extensions
             options.AbsoluteExpirationRelativeToNow = absoluteExpiretime ?? TimeSpan.FromSeconds(60);
             options.SlidingExpiration = unusedExpireTime;
 
-            var jsonData = JsonSerializer.Serialize(data);
+            var jsonOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+            };
+            var jsonData = JsonSerializer.Serialize(data, jsonOptions);
             await cache.SetStringAsync(recordId, jsonData, options);
 
 
@@ -30,8 +34,11 @@ namespace AttendanceSystem.Extensions
             {
                 return default;
             }
-
-            return JsonSerializer.Deserialize<T>(jsonData);
+            var jsonOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+            };
+            return JsonSerializer.Deserialize<T>(jsonData, jsonOptions);
         }
     }
 }
