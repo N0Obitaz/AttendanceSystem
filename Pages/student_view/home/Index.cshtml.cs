@@ -45,8 +45,7 @@ namespace AttendanceSystem.Pages.student_view.Home
                 AbsentMarks = Student.Attendances.Count(a => a.Status == "Absent");
                 LateMarks = Student.Attendances.Count(a => a.Status == "Late");
 
-                Console.WriteLine($"Absent {AbsentMarks}");
-                Console.WriteLine($"Late {LateMarks}");
+                
 
             }
 
