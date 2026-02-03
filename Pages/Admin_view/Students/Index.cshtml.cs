@@ -43,8 +43,7 @@ namespace AttendanceSystem.Pages.Students
             Today = now.Date;
             var cutOffTime = new DateTime(Today.Year, Today.Month, Today.Day, 12, 0, 0);
 
-            // --- PHASE 1: THE LOGIC (Always Runs) ---
-            // We only fetch what we need for the logic to reduce memory usage
+            
             Student = await _context.Student
                 .Include(s => s.Attendances)
                 .ToListAsync();
@@ -69,12 +68,11 @@ namespace AttendanceSystem.Pages.Students
                 _context.TransactionLogs.AddRange(newLogs);
                 await _context.SaveChangesAsync();
 
-                // IMPORTANT: If we changed the DB, we MUST clear the cache 
-                // so the totals refresh on the next line!
+               
                 await _cache.RemoveAsync($"AttendanceTotals_{Today:yyyyMMdd}");
             }
 
-            // --- PHASE 2: THE CACHING (The "Fast" Part) ---
+            
             string cacheKey = $"AttendanceTotals_{Today:yyyyMMdd}";
             var cachedTotals = await _cache.GetRecordAsync<AttendanceSummary>(cacheKey);
 
