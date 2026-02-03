@@ -64,7 +64,13 @@ builder.Services.AddDbContext<AttendanceSystemContext>(options =>
                maxRetryDelay: TimeSpan.FromSeconds(30),
                errorNumbersToAdd: null);
        }));
-        
+
+builder.Services.AddDistributedSqlServerCache(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.SchemaName = "dbo";
+    options.TableName = "AttendanceSystemCache";
+});
 
 var app = builder.Build();
 
