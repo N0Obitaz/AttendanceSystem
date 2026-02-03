@@ -52,68 +52,76 @@
                 
             </tr>
         </thead>
-        <tbody>
-            @foreach (var item in Model.Student)
-            {
-                
-                <tr >
-                    <td>
-                        <a asp-page="./Details" asp-route-id="@item.StudentId">
-                  @Html.DisplayFor(modelItem => item.LastName)
-                    </a>
-                    </td>
-                   
-                   
-                    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-                    <td>
-                        <a asp-page="../AttendanceMatrix/Matrices" asp-route-id = "@item.StudentId">
-                            <span class="text-dark">
-                                @item.Attendances.Count(a => a.Status == "Present" || a.Status == "Late") /
-                                @item.Attendances.Count()
-                            </span>
-                        </a>
-                       
-                    </td>
-                    <td>
+
+        @if(Model.Student is not null)
+        {
+            <tbody>
 
 
-                        @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today))
-                        {
-                            @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Present"))
-                            {
-                                <span class="badge bg-success">Attendance Marked Present</span>
-                            }
-                            else if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Absent"))
-                            {
-                                <span class="badge bg-danger">Attendance Marked Absent</span>
-                            }
-                            else if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status.ToLower() == "late"))
-                            {
-                                <span class="badge bg-warning">Attendance Marked Late</span>
-                            }
-                        }
-                        else
-                        {
-                            <a class="btn btn-sm btn-toolbar">
-                                Haven't Marked Attendance Yet
+
+                @foreach (var item in Model.Student)
+                {
+
+                    <tr>
+                        <td>
+                            <a asp-page="./Details" asp-route-id="@item.StudentId">
+                                @Html.DisplayFor(modelItem => item.LastName)
                             </a>
-                        }
-                    </td>
-                    <td class="text-center">
-                        <a asp-page="./Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-success me-1">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                     
-                        <a asp-page="./Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-danger me-1">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                        </td>
 
-                     
-                    </td>
-                    
-                </tr>
-            }
-        </tbody>
+
+                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                        <td>
+                            <a asp-page="../AttendanceMatrix/Matrices" asp-route-id="@item.StudentId">
+                                <span class="text-dark">
+                                    @item.Attendances.Count(a => a.Status == "Present" || a.Status == "Late") /
+                                    @item.Attendances.Count()
+                                </span>
+                            </a>
+
+                        </td>
+                        <td>
+
+
+                            @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today))
+                            {
+                                @if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Present"))
+                                {
+                                    <span class="badge bg-success">Attendance Marked Present</span>
+                                }
+                                else if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status == "Absent"))
+                                {
+                                    <span class="badge bg-danger">Attendance Marked Absent</span>
+                                }
+                                else if (item.Attendances.Any(a => a.Date.Date == DateTime.Today && a.Status.ToLower() == "late"))
+                                {
+                                    <span class="badge bg-warning">Attendance Marked Late</span>
+                                }
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm btn-toolbar">
+                                    Haven't Marked Attendance Yet
+                                </a>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a asp-page="./Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-success me-1">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+
+                            <a asp-page="./Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-danger me-1">
+                                <i class="bi bi-trash"></i>
+                            </a>
+
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        }
+        
     </table>
 
     <div class="pagination">
