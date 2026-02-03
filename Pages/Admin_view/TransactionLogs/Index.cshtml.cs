@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AttendanceSystem.Data;
 using AttendanceSystem.Models;
 using Microsoft.Extensions.Caching.Distributed;
+using AttendanceSystem.Extensions;
 
 namespace AttendanceSystem.Pages.TransactionLogs
 {
@@ -25,10 +26,21 @@ namespace AttendanceSystem.Pages.TransactionLogs
 
         public async Task OnGetAsync()
         {
-            TransactionLog = await _context.TransactionLogs
-                .Include(t => t.Student)
-                .OrderByDescending(t => t.Timestamp)
-                .ToListAsync();
+            string cacheKey = "TransactionLogsAll";
+
+            var cachedTransactionLogs = await _cache.GetRecordAsync<List<TransactionLog>>(cacheKey);
+
+            if (cachedTransactionLogs == null)
+            {
+                TransactionLog = await _context.TransactionLogs
+                  .Include(t => t.Student)
+                  .OrderByDescending(t => t.Timestamp)
+                  .ToListAsync();
+
+                await _cache.SetRecordAsync(cacheKey, TransactionLog, TimeSpan.FromMinutes(10));
+            }
+
+          
         }
     }
 }
