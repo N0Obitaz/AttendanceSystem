@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Serilog;
+
+using AttendanceSystem.Extensions;
 
 namespace AttendanceSystem.Pages.Students
 {
@@ -18,12 +21,13 @@ namespace AttendanceSystem.Pages.Students
     public class IndexModel : PageModel
     {
         private readonly AttendanceSystem.Data.AttendanceSystemContext _context;
+        private readonly IDistributedCache _cache;
 
 
-        public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context)
+        public IndexModel(AttendanceSystem.Data.AttendanceSystemContext context, IDistributedCache cache)
         {
             _context = context;
-
+            _cache = cache;
         }
         public DateTime Today { get; set; }
         public IList<Student>? Student { get; set; }
@@ -37,71 +41,65 @@ namespace AttendanceSystem.Pages.Students
         {
             var now = DateTime.UtcNow.AddHours(8);
             Today = now.Date;
-
             var cutOffTime = new DateTime(Today.Year, Today.Month, Today.Day, 12, 0, 0);
 
-            
+            // --- PHASE 1: THE LOGIC (Always Runs) ---
+            // We only fetch what we need for the logic to reduce memory usage
             Student = await _context.Student
                 .Include(s => s.Attendances)
                 .ToListAsync();
 
-           
             var newAttendances = new List<Attendance>();
             var newLogs = new List<TransactionLog>();
 
-         
             foreach (var student in Student)
             {
-           
-                bool hasAttendanceToday = student.Attendances != null &&
-                                          student.Attendances.Any(a => a.Date.Date == Today);
+                bool hasAttendanceToday = student.Attendances?.Any(a => a.Date.Date == Today) ?? false;
 
-                if (hasAttendanceToday)
+                if (!hasAttendanceToday && now >= cutOffTime)
                 {
-                    continue;
-                }
-
-             
-                if (now >= cutOffTime)
-                {
-                   
-                    var attendance = new Attendance
-                    {
-                        StudentId = student.StudentId,
-                        Date = Today, 
-                        Status = "Absent"
-                    };
-                    newAttendances.Add(attendance);
-
-               
-                    var transactionLog = new TransactionLog
-                    {
-                        StudentId = student.StudentId,
-                        Action = "Marked Absent (Auto)",
-                        Timestamp = now
-                    };
-                    newLogs.Add(transactionLog);
+                    newAttendances.Add(new Attendance { StudentId = student.StudentId, Date = Today, Status = "Absent" });
+                    newLogs.Add(new TransactionLog { StudentId = student.StudentId, Action = "Marked Absent (Auto)", Timestamp = now });
                 }
             }
 
-                
             if (newAttendances.Any())
             {
                 _context.Attendances.AddRange(newAttendances);
                 _context.TransactionLogs.AddRange(newLogs);
-
                 await _context.SaveChangesAsync();
 
-                Log.Information("Marked {Count} students as Absent.", newAttendances.Count);
+                // IMPORTANT: If we changed the DB, we MUST clear the cache 
+                // so the totals refresh on the next line!
+                await _cache.RemoveAsync($"AttendanceTotals_{Today:yyyyMMdd}");
             }
 
-            // 7. Calculate Totals (OUTSIDE the loop)
-            // We re-query the DB to ensure we get the fresh counts including the ones we just added
-            TotalPresent = await _context.Attendances
-                .CountAsync(a => a.Date.Date == Today && a.Status == "Present");
+            // --- PHASE 2: THE CACHING (The "Fast" Part) ---
+            string cacheKey = $"AttendanceTotals_{Today:yyyyMMdd}";
+            var cachedTotals = await _cache.GetRecordAsync<AttendanceSummary>(cacheKey);
 
-            TotalAbsent = await _context.Attendances
-                .CountAsync(a => a.Date.Date == Today && a.Status == "Absent");
+            if (cachedTotals == null)
+            {
+                
+                TotalPresent = await _context.Attendances.CountAsync(a => a.Date.Date == Today && a.Status == "Present");
+                TotalAbsent = await _context.Attendances.CountAsync(a => a.Date.Date == Today && a.Status == "Absent");
+
+                
+                var summary = new AttendanceSummary { Present = TotalPresent, Absent = TotalAbsent };
+                await _cache.SetRecordAsync(cacheKey, summary, TimeSpan.FromMinutes(5));
+            }
+            else
+            {
+               
+                TotalPresent = cachedTotals.Present;
+                TotalAbsent = cachedTotals.Absent;
+            }
         }
+    }
+
+    public class AttendanceSummary
+    {
+        public int Present { get; set; }
+        public int Absent { get; set; }
     }
 }
