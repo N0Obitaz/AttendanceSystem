@@ -58,7 +58,7 @@ builder.Services.AddDbContext<AttendanceSystemContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
        sqlServerOptionsAction: sqlOptions =>
        {
-           // This is the magic line that fixes the error
+           // Enable retry to fix the error
            sqlOptions.EnableRetryOnFailure(
                maxRetryCount: 5,
                maxRetryDelay: TimeSpan.FromSeconds(30),
